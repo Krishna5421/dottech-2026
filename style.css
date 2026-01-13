@@ -2648,5 +2648,36 @@ textarea:focus {
 }
 
 /* ============================================================================
+   MOBILE OPTIMIZATION
+   ============================================================================ */
+@media (max-width: 768px) {
+    /* Only hide the HEAVIEST effects */
+    #particles,
+    #matrix-rain {
+        display: none !important;
+    }
+    
+    /* Simplify complex animations only */
+    .terminal-window::before,
+    .terminal-body::before,
+    .card-glow,
+    .box-glow {
+        animation: none !important;
+    }
+    
+    /* Speed up remaining animations (faster = smoother) */
+    .glitch::before,
+    .glitch::after {
+        animation-duration: 2s !important;
+    }
+    
+    /* Keep all visual effects, just optimize rendering */
+    * {
+        will-change: auto !important;
+    }
+}
+
+/* ============================================================================
    END OF COMPLETE CSS
+
    ============================================================================ */
