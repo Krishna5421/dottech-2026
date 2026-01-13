@@ -8,10 +8,14 @@
 // Disable heavy animations on low-end devices to improve performance
 // ============================================================================
 
-// Check device CPU cores - if 4 or less, disable particle effects
-if (navigator.hardwareConcurrency <= 4) {
+// Disable heavy animations on mobile and low-end devices
+if (navigator.hardwareConcurrency <= 4 || window.innerWidth <= 768) {
     document.getElementById('particles').style.display = 'none';
     document.getElementById('matrix-rain').style.display = 'none';
+    
+    // Disable all background effects on mobile
+    const effects = document.querySelectorAll('.cyber-grid, .scan-line, .scan-line-v, .holo-overlay, .glitch-overlay, .hex-container');
+    effects.forEach(el => el.style.display = 'none');
 }
 
 // ============================================================================
@@ -2199,3 +2203,4 @@ function importData() {
     // Trigger file picker
     input.click();
 }
+
