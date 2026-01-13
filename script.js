@@ -2205,91 +2205,84 @@ function importData() {
 }
 
 // ============================================================================
-// MOBILE PERFORMANCE - ABSOLUTE ZERO ANIMATION MODE
+// MOBILE PERFORMANCE - WITH SCROLL BRIGHTNESS CONTROL
 // ============================================================================
 
 if (window.innerWidth <= 768) {
-    // Kill ALL animation functions
+    // Kill heavy animation functions
     window.updateParallax = function() {};
     window.drawMatrix = function() {};
     window.animateParticles = function() {};
     
-    // Remove all event listeners
+    // Remove heavy event listeners
     window.removeEventListener('scroll', updateParallax);
     window.removeEventListener('mousemove', () => {});
     
-    // Clear all intervals and timeouts
+    // Clear intervals (keep only essential ones)
     const highestIntervalId = setInterval(() => {}, 0);
     for (let i = 0; i < highestIntervalId; i++) {
-        clearInterval(i);
+        if (i > 10) { // Keep first 10 for essential functions
+            clearInterval(i);
+        }
     }
     
-    const highestTimeoutId = setTimeout(() => {}, 0);
-    for (let i = 0; i < highestTimeoutId; i++) {
-        clearTimeout(i);
-    }
+    // ========================================================================
+    // SCROLL BRIGHTNESS CONTROL - Lighter up, Darker down
+    // ========================================================================
     
-    // Force everything visible on load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Make all sections immediately visible
-        const sections = document.querySelectorAll('section, .section-content, .detail-card, .highlight-box, .terminal-window');
-        sections.forEach(el => {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.animation = 'none';
-            el.style.transition = 'none';
-        });
-        
-        // Fix body
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.style.backgroundColor = '#000000';
-        
-        // Disable CSS animations via style injection
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @media (max-width: 768px) {
-                * {
-                    animation: none !important;
-                    transition: none !important;
-                }
-                .terminal-cursor {
-                    animation: cursorBlink 1s steps(2, start) infinite !important;
-                }
-                @keyframes cursorBlink {
-                    50% { opacity: 0; }
-                }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Force reflow
-        document.body.offsetHeight;
-    });
-    
-    // Optimize scrolling
+    let lastScrollY = 0;
     let scrollTimeout;
+    
     window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Determine scroll direction
+        if (currentScrollY < lastScrollY) {
+            // Scrolling UP - Lighter theme
+            document.body.classList.add('scrolled-up');
+            document.body.classList.remove('scrolled-down');
+        } else if (currentScrollY > lastScrollY) {
+            // Scrolling DOWN - Darker theme
+            document.body.classList.add('scrolled-down');
+            document.body.classList.remove('scrolled-up');
+        }
+        
+        lastScrollY = currentScrollY;
+        
+        // Optimize pointer events during scroll
         document.body.style.pointerEvents = 'none';
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
             document.body.style.pointerEvents = 'auto';
+            
+            // Reset classes after scroll stops
+            setTimeout(() => {
+                document.body.classList.remove('scrolled-up', 'scrolled-down');
+            }, 300);
         }, 50);
     }, { passive: true });
     
-    // Disable requestAnimationFrame loops
+    // Force everything visible on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make all sections visible
+        const sections = document.querySelectorAll('section, .section-content, .detail-card, .highlight-box, .terminal-window');
+        sections.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        });
+        
+        // Fix body background
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundColor = '#05081a';
+    });
+    
+    // Disable RAF loops except essential ones
     const originalRAF = window.requestAnimationFrame;
     window.requestAnimationFrame = function(callback) {
-        // Only allow cursor blink
-        if (callback && callback.toString().includes('cursor')) {
+        // Allow cursor blink and loading animations
+        if (callback && (callback.toString().includes('cursor') || callback.toString().includes('loading'))) {
             return originalRAF(callback);
         }
         return null;
     };
-    
-    // Stop glitch interval
-    const glitchInterval = setInterval(() => {}, 8000);
-    clearInterval(glitchInterval);
-    
-    // Stop cursor trail
-    document.removeEventListener('mousemove', () => {});
 }
