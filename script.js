@@ -2205,56 +2205,91 @@ function importData() {
 }
 
 // ============================================================================
-// MOBILE SCROLL PARALLAX - Intersection Observer (No Lag!)
+// MOBILE PERFORMANCE - ABSOLUTE ZERO ANIMATION MODE
 // ============================================================================
 
-// Check if mobile device
-const isMobile = window.innerWidth <= 768;
-
-if (isMobile) {
-    // Use Intersection Observer for mobile (much better performance)
-    const observerOptions = {
-        root: null,
-        threshold: 0.15, // Trigger when 15% visible
-        rootMargin: '0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-            }
+if (window.innerWidth <= 768) {
+    // Kill ALL animation functions
+    window.updateParallax = function() {};
+    window.drawMatrix = function() {};
+    window.animateParticles = function() {};
+    
+    // Remove all event listeners
+    window.removeEventListener('scroll', updateParallax);
+    window.removeEventListener('mousemove', () => {});
+    
+    // Clear all intervals and timeouts
+    const highestIntervalId = setInterval(() => {}, 0);
+    for (let i = 0; i < highestIntervalId; i++) {
+        clearInterval(i);
+    }
+    
+    const highestTimeoutId = setTimeout(() => {}, 0);
+    for (let i = 0; i < highestTimeoutId; i++) {
+        clearTimeout(i);
+    }
+    
+    // Force everything visible on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Make all sections immediately visible
+        const sections = document.querySelectorAll('section, .section-content, .detail-card, .highlight-box, .terminal-window');
+        sections.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            el.style.animation = 'none';
+            el.style.transition = 'none';
         });
-    }, observerOptions);
-
-    // Observe all sections
-    const sections = [
-        document.getElementById('deptSection'),
-        document.getElementById('messageSection'),
-        document.getElementById('detailsSection'),
-        document.getElementById('highlightsSection'),
-        document.getElementById('footerSection')
-    ];
-
-    sections.forEach(section => {
-        if (section) observer.observe(section);
+        
+        // Fix body
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundColor = '#000000';
+        
+        // Disable CSS animations via style injection
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @media (max-width: 768px) {
+                * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+                .terminal-cursor {
+                    animation: cursorBlink 1s steps(2, start) infinite !important;
+                }
+                @keyframes cursorBlink {
+                    50% { opacity: 0; }
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Force reflow
+        document.body.offsetHeight;
     });
-} else {
-    // Desktop: Keep original parallax scroll
-    let ticking = false;
-    let scrollPosition = 0;
-
+    
+    // Optimize scrolling
+    let scrollTimeout;
     window.addEventListener('scroll', () => {
-        scrollPosition = window.scrollY;
-
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                updateParallax();
-                ticking = false;
-            });
-            ticking = true;
+        document.body.style.pointerEvents = 'none';
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            document.body.style.pointerEvents = 'auto';
+        }, 50);
+    }, { passive: true });
+    
+    // Disable requestAnimationFrame loops
+    const originalRAF = window.requestAnimationFrame;
+    window.requestAnimationFrame = function(callback) {
+        // Only allow cursor blink
+        if (callback && callback.toString().includes('cursor')) {
+            return originalRAF(callback);
         }
-    });
+        return null;
+    };
+    
+    // Stop glitch interval
+    const glitchInterval = setInterval(() => {}, 8000);
+    clearInterval(glitchInterval);
+    
+    // Stop cursor trail
+    document.removeEventListener('mousemove', () => {});
 }
-
-
