@@ -2648,7 +2648,7 @@ textarea:focus {
 }
 
 /* ============================================================================
-   MOBILE OPTIMIZATION - PERFECT PLACEMENT + SUBTLE ANIMATIONS
+   MOBILE OPTIMIZATION - PERFECT WITH PC LOADING SCREEN
    ============================================================================ */
 @media (max-width: 768px) {
     /* Hide ALL heavy animated elements */
@@ -2758,12 +2758,12 @@ textarea:focus {
         transition: filter 0.3s ease-out;
     }
     
-    /* Lighter theme when scrolled up (added via JS) */
+    /* Lighter theme when scrolled up */
     body.scrolled-up::before {
         filter: brightness(1.15);
     }
     
-    /* Darker theme when scrolled down (added via JS) */
+    /* Darker theme when scrolled down */
     body.scrolled-down::before {
         filter: brightness(0.92);
     }
@@ -2942,7 +2942,7 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX TERMINAL HEADER DOTS - PROPER SPACING
+       FIX TERMINAL HEADER - NO ANIMATIONS, PROPER SPACING
        ======================================================================== */
     
     .terminal-header {
@@ -2966,6 +2966,12 @@ textarea:focus {
         border-radius: 50% !important;
         flex-shrink: 0 !important;
         box-shadow: 0 0 12px currentColor !important;
+        animation: none !important; /* NO animation */
+    }
+    
+    .terminal-dot::after,
+    .terminal-dot::before {
+        display: none !important; /* Remove pulse effects */
     }
     
     .terminal-dot.red {
@@ -3004,6 +3010,107 @@ textarea:focus {
         border-radius: 50% !important;
         box-shadow: 0 0 15px var(--neon-cyan) !important;
         flex-shrink: 0 !important;
+        animation: none !important; /* NO animation */
+    }
+    
+    .status-indicator::before,
+    .status-indicator::after {
+        display: none !important; /* Remove ripple effects */
+    }
+    
+    /* ========================================================================
+       FIX TERMINAL PROMPT - PROPER $ AND MESSAGE
+       ======================================================================== */
+    
+    .prompt-symbol {
+        color: var(--neon-pink) !important;
+        margin: 0 clamp(6px, 1.5vw, 8px) !important;
+        animation: none !important; /* NO blinking */
+        opacity: 1 !important;
+    }
+    
+    .prompt-cmd {
+        color: var(--neon-cyan) !important;
+        text-shadow: 0 0 10px var(--neon-cyan) !important;
+    }
+    
+    /* Fix .tech to show as message with m underlined */
+    .terminal-prompt {
+        color: var(--neon-cyan) !important;
+        margin-bottom: clamp(18px, 4vh, 25px) !important;
+        font-size: clamp(14px, 3vw, 16px) !important;
+        word-break: break-all !important;
+        animation: none !important;
+        position: relative !important;
+        text-shadow: 0 0 10px rgba(0, 243, 255, 0.6) !important;
+    }
+    
+    /* ========================================================================
+       SLOW CURSOR BLINK
+       ======================================================================== */
+    
+    .terminal-cursor {
+        animation: cursorBlinkSlow 2s steps(2, start) infinite !important; /* 2 seconds instead of 1 */
+    }
+    
+    @keyframes cursorBlinkSlow {
+        50% { opacity: 0; }
+    }
+    
+    /* ========================================================================
+       LOADING SCREEN - SAME AS PC VERSION
+       ======================================================================== */
+    
+    .loading-logo {
+        width: clamp(150px, 40vw, 200px) !important;
+        height: clamp(150px, 40vw, 200px) !important;
+        margin: 0 auto clamp(25px, 5vw, 40px) !important;
+        position: relative !important;
+    }
+    
+    .logo-ring {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border: 3px solid var(--neon-cyan) !important;
+        border-radius: 50% !important;
+        border-top-color: transparent !important;
+        animation: logoSpin 2s linear infinite !important; /* Same as PC */
+    }
+    
+    .logo-ring:nth-child(2) {
+        animation-delay: 0.5s !important; /* Staggered like PC */
+    }
+    
+    .logo-ring:nth-child(3) {
+        animation-delay: 1s !important; /* Staggered like PC */
+    }
+    
+    @keyframes logoSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .logo-core {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: clamp(50px, 12vw, 80px) !important;
+        animation: corePulse 1.2s infinite alternate !important; /* Same as PC */
+    }
+    
+    @keyframes corePulse {
+        0% { 
+            transform: translate(-50%, -50%) scale(1);
+            filter: drop-shadow(0 0 15px var(--neon-cyan));
+        }
+        100% { 
+            transform: translate(-50%, -50%) scale(1.3);
+            filter: drop-shadow(0 0 40px var(--neon-cyan));
+        }
     }
     
     /* ========================================================================
@@ -3013,7 +3120,7 @@ textarea:focus {
     .highlight-box {
         position: relative !important;
         padding: clamp(30px, 6vw, 50px) clamp(20px, 4vw, 30px) !important;
-        padding-bottom: clamp(35px, 7vw, 55px) !important; /* Extra space for line */
+        padding-bottom: clamp(35px, 7vw, 55px) !important;
     }
     
     .highlight-box::after {
@@ -3035,7 +3142,23 @@ textarea:focus {
     .detail-card {
         position: relative !important;
         padding: clamp(35px, 7vw, 50px) clamp(20px, 4vw, 30px) !important;
-        padding-bottom: clamp(40px, 8vw, 55px) !important; /* Extra space for line */
+        padding-bottom: clamp(40px, 8vw, 55px) !important;
+    }
+    
+    .detail-card::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 3px !important;
+        background: linear-gradient(90deg, 
+            var(--neon-cyan), 
+            var(--neon-pink), 
+            var(--neon-green), 
+            var(--neon-cyan)) !important;
+        box-shadow: 0 0 10px var(--neon-cyan) !important;
+        z-index: 10 !important;
     }
     
     .detail-card::after {
@@ -3055,84 +3178,9 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX LOADING SCREEN - SUBTLE CIRCLE ANIMATION
-       ======================================================================== */
-    
-    .loading-logo {
-        width: clamp(180px, 45vw, 220px) !important;
-        height: clamp(180px, 45vw, 220px) !important;
-        margin: 0 auto clamp(30px, 6vw, 50px) !important;
-        position: relative !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    .logo-ring {
-        position: absolute !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        width: 100% !important;
-        height: 100% !important;
-        border: 3px solid var(--neon-cyan) !important;
-        border-radius: 50% !important;
-        border-top-color: transparent !important;
-        border-right-color: transparent !important;
-        animation: logoSpin 3s linear infinite !important;
-    }
-    
-    .logo-ring:nth-child(2) {
-        width: 80% !important;
-        height: 80% !important;
-        border-color: var(--neon-pink) !important;
-        border-top-color: transparent !important;
-        border-left-color: transparent !important;
-        animation-duration: 2.5s !important;
-        animation-direction: reverse !important;
-    }
-    
-    .logo-ring:nth-child(3) {
-        width: 60% !important;
-        height: 60% !important;
-        border-color: var(--neon-green) !important;
-        border-bottom-color: transparent !important;
-        border-right-color: transparent !important;
-        animation-duration: 2s !important;
-    }
-    
-    @keyframes logoSpin {
-        0% { transform: translate(-50%, -50%) rotate(0deg); }
-        100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-    
-    .logo-core {
-        position: absolute !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
-        font-size: clamp(60px, 15vw, 90px) !important;
-        z-index: 10 !important;
-        filter: drop-shadow(0 0 25px var(--neon-cyan)) !important;
-        animation: corePulse 2.5s ease-in-out infinite !important;
-    }
-    
-    @keyframes corePulse {
-        0%, 100% { 
-            transform: translate(-50%, -50%) scale(1);
-            filter: drop-shadow(0 0 25px var(--neon-cyan));
-        }
-        50% { 
-            transform: translate(-50%, -50%) scale(1.1);
-            filter: drop-shadow(0 0 40px var(--neon-cyan)) drop-shadow(0 0 60px var(--neon-pink));
-        }
-    }
-    
-    /* ========================================================================
        DISABLE OTHER ANIMATIONS
        ======================================================================== */
     
-    /* Disable most animations but keep essential ones */
     .terminal-window,
     .terminal-window::before,
     .terminal-window::after,
@@ -3142,23 +3190,11 @@ textarea:focus {
     .year-cube,
     .subtitle-word,
     .subtitle-dot,
-    .terminal-dot::after,
-    .status-indicator::before,
-    .scroll-wheel,
     .frame-corner,
     .loading-progress,
     .glitch::before,
     .glitch::after {
         animation: none !important;
-    }
-    
-    /* Keep ONLY cursor blink */
-    .terminal-cursor {
-        animation: cursorBlink 1s steps(2, start) infinite !important;
-    }
-    
-    @keyframes cursorBlink {
-        50% { opacity: 0; }
     }
     
     /* Static glows */
@@ -3205,12 +3241,21 @@ textarea:focus {
         opacity: 1 !important;
         transform: none !important;
     }
+    
+    /* Terminal static */
+    .terminal-window {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.9),
+            0 0 50px rgba(0, 243, 255, 0.4),
+            inset 0 0 40px rgba(0, 243, 255, 0.1) !important;
+    }
 }
 
 /* ============================================================================
    END OF COMPLETE CSS
 
    ============================================================================ */
+
 
 
 
