@@ -2204,3 +2204,57 @@ function importData() {
     input.click();
 }
 
+// ============================================================================
+// MOBILE SCROLL PARALLAX - Intersection Observer (No Lag!)
+// ============================================================================
+
+// Check if mobile device
+const isMobile = window.innerWidth <= 768;
+
+if (isMobile) {
+    // Use Intersection Observer for mobile (much better performance)
+    const observerOptions = {
+        root: null,
+        threshold: 0.15, // Trigger when 15% visible
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections
+    const sections = [
+        document.getElementById('deptSection'),
+        document.getElementById('messageSection'),
+        document.getElementById('detailsSection'),
+        document.getElementById('highlightsSection'),
+        document.getElementById('footerSection')
+    ];
+
+    sections.forEach(section => {
+        if (section) observer.observe(section);
+    });
+} else {
+    // Desktop: Keep original parallax scroll
+    let ticking = false;
+    let scrollPosition = 0;
+
+    window.addEventListener('scroll', () => {
+        scrollPosition = window.scrollY;
+
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateParallax();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+}
+
+
