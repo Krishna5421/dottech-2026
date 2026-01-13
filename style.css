@@ -2678,48 +2678,6 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX SCROLL LAG - HARDWARE ACCELERATION + SMOOTH TRANSITIONS
-       ======================================================================== */
-    
-    /* Enable GPU acceleration for smooth scrolling */
-    html {
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-    }
-    
-    body {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        perspective: 1000px;
-    }
-    
-    /* Optimize all sections for smooth scroll */
-    .hero-section,
-    .dept-section,
-    .message-section,
-    .details-section,
-    .highlights-section,
-    .footer-section {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        will-change: auto;
-        contain: layout style paint;
-    }
-    
-    /* Reduce repaints during scroll */
-    .hero-section::before,
-    .dept-section::before,
-    .message-section::before,
-    .details-section::before,
-    .highlights-section::before,
-    .footer-section::before {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-    }
-    
-    /* ========================================================================
        OPTIMIZED BACKGROUND - REDUCED LAYERS FOR PERFORMANCE
        ======================================================================== */
     
@@ -2733,8 +2691,6 @@ textarea:focus {
         height: 100%;
         z-index: 0;
         pointer-events: none;
-        transform: translateZ(0);
-        backface-visibility: hidden;
         background: 
             /* Main Nebula clouds - Only 4 instead of 11 */
             radial-gradient(ellipse at 15% 25%, rgba(0, 243, 255, 0.22) 0%, transparent 45%),
@@ -2775,7 +2731,18 @@ textarea:focus {
             top,
             center;
         
-        background-attachment: fixed;
+        transition: filter 0.3s ease-out;
+        will-change: filter;
+    }
+    
+    /* Lighter theme when scrolled up */
+    body.scrolled-up::before {
+        filter: brightness(1.15);
+    }
+    
+    /* Darker theme when scrolled down */
+    body.scrolled-down::before {
+        filter: brightness(0.92);
     }
     
     /* Layer 2: Simplified Grid (50% fewer patterns) */
@@ -2788,8 +2755,6 @@ textarea:focus {
         height: 100%;
         z-index: 1;
         pointer-events: none;
-        transform: translateZ(0);
-        backface-visibility: hidden;
         background: 
             /* Primary grid - Cyan */
             linear-gradient(0deg, transparent 97%, rgba(0, 243, 255, 0.15) 100%),
@@ -2829,15 +2794,11 @@ textarea:focus {
             0 0,
             0 0,
             top;
-        
-        background-attachment: fixed;
     }
     
     /* Layer 3: Simplified Cyber Grid (50% fewer patterns) */
     .cyber-grid {
         display: block !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
         background: 
             /* Hexagons - Only 2 layers instead of 8 */
             linear-gradient(30deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
@@ -2873,8 +2834,6 @@ textarea:focus {
         height: 100%;
         z-index: 1;
         pointer-events: none;
-        transform: translateZ(0);
-        backface-visibility: hidden;
         background: 
             /* Tech rings - Only 2 instead of 3 */
             radial-gradient(circle at 20% 30%, transparent 17%, rgba(0, 243, 255, 0.15) 18%, transparent 19%),
@@ -2906,64 +2865,44 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX SCROLL INDICATOR - REDUCED ANIMATION FREQUENCY
+       FIX SCROLL INDICATOR - SUBTLE ANIMATION
        ======================================================================== */
     
-    .scroll-indicator {
-        animation: bounce 6s ease-in-out infinite !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-    }
-    
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0) translateZ(0); }
-        50% { transform: translateY(15px) translateZ(0); }
-    }
-    
     .swipe-hand {
-        animation: swipeUpDown 5s ease-in-out infinite !important;
+        animation: swipeUpDown 4s ease-in-out infinite !important;
     }
     
     @keyframes swipeUpDown {
         0%, 100% { transform: translateY(0); opacity: 1; }
-        50% { transform: translateY(-10px); opacity: 0.8; }
+        50% { transform: translateY(-12px); opacity: 0.7; }
     }
     
     .swipe-line {
-        animation: swipeLine 5s ease-in-out infinite !important;
+        animation: swipeLine 4s ease-in-out infinite !important;
     }
     
     @keyframes swipeLine {
         0% { transform: translateY(0) scaleX(1); opacity: 0; }
-        50% { transform: translateY(-6px) scaleX(0.8); opacity: 0.7; }
-        100% { transform: translateY(-12px) scaleX(0.5); opacity: 0; }
+        50% { transform: translateY(-8px) scaleX(0.7); opacity: 0.8; }
+        100% { transform: translateY(-15px) scaleX(0.4); opacity: 0; }
     }
     
     .scroll-arrow {
-        animation: arrowBlink 3s infinite !important;
+        animation: arrowBlink 2.5s infinite !important;
     }
     
     @keyframes arrowBlink {
         0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+        50% { opacity: 0.3; }
     }
     
-    /* ========================================================================
-       FIX TERMINAL WINDOW - OPTIMIZED FOR MOBILE
-       ======================================================================== */
-    
-    .terminal-window {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.9),
-            0 0 50px rgba(0, 243, 255, 0.4),
-            inset 0 0 40px rgba(0, 243, 255, 0.1) !important;
+    .scroll-indicator {
+        animation: bounce 5s ease-in-out infinite !important;
     }
     
-    .terminal-window::before,
-    .terminal-window::after {
-        display: none !important;
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(20px); }
     }
     
     /* ========================================================================
@@ -2976,8 +2915,6 @@ textarea:focus {
         align-items: center !important;
         justify-content: space-between !important;
         gap: clamp(10px, 2vw, 15px) !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
     .terminal-controls {
@@ -3046,73 +2983,28 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX TERMINAL PROMPT - CORRECT "M" ALIGNMENT IN "MESSAGE"
+       FIX TERMINAL PROMPT
        ======================================================================== */
-    
-    .terminal-prompt {
-        color: var(--neon-cyan) !important;
-        margin-bottom: clamp(18px, 4vh, 25px) !important;
-        font-size: clamp(14px, 3vw, 16px) !important;
-        word-break: normal !important;
-        word-wrap: break-word !important;
-        animation: none !important;
-        text-shadow: 0 0 10px rgba(0, 243, 255, 0.6) !important;
-        display: flex !important;
-        flex-wrap: wrap !important;
-        align-items: baseline !important;
-        line-height: 1.6 !important;
-    }
-    
-    .prompt-icon {
-        color: var(--neon-cyan) !important;
-        margin-right: clamp(6px, 1.5vw, 8px) !important;
-        animation: none !important;
-        flex-shrink: 0 !important;
-    }
-    
-    .prompt-path {
-        color: #00ff9d !important;
-        text-shadow: 0 0 15px #00ff9d, 0 0 30px rgba(0, 255, 157, 0.8) !important;
-        font-weight: 600 !important;
-        flex-shrink: 0 !important;
-    }
     
     .prompt-symbol {
         color: var(--neon-pink) !important;
         margin: 0 clamp(6px, 1.5vw, 8px) !important;
         animation: none !important;
         opacity: 1 !important;
-        flex-shrink: 0 !important;
     }
     
     .prompt-cmd {
         color: var(--neon-cyan) !important;
         text-shadow: 0 0 10px var(--neon-cyan) !important;
-        word-break: keep-all !important;
-        white-space: nowrap !important;
     }
     
-    /* ========================================================================
-       TERMINAL BODY - OPTIMIZED
-       ======================================================================== */
-    
-    .terminal-body {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-    }
-    
-    .terminal-body::before {
-        display: none !important;
-    }
-    
-    .message-output {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-    }
-    
-    .message-text {
-        transform: translateZ(0);
-        backface-visibility: hidden;
+    .terminal-prompt {
+        color: var(--neon-cyan) !important;
+        margin-bottom: clamp(18px, 4vh, 25px) !important;
+        font-size: clamp(14px, 3vw, 16px) !important;
+        word-break: break-all !important;
+        animation: none !important;
+        text-shadow: 0 0 10px rgba(0, 243, 255, 0.6) !important;
     }
     
     /* ========================================================================
@@ -3131,18 +3023,11 @@ textarea:focus {
        LOADING SCREEN - SAME AS PC
        ======================================================================== */
     
-    .loading-screen {
-        transform: translateZ(0);
-        backface-visibility: hidden;
-    }
-    
     .loading-logo {
         width: clamp(150px, 40vw, 200px) !important;
         height: clamp(150px, 40vw, 200px) !important;
         margin: 0 auto clamp(25px, 5vw, 40px) !important;
         position: relative !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
     .logo-ring {
@@ -3198,8 +3083,6 @@ textarea:focus {
         position: relative !important;
         padding: clamp(30px, 6vw, 50px) clamp(20px, 4vw, 30px) !important;
         padding-bottom: clamp(35px, 7vw, 55px) !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
     .highlight-box::after {
@@ -3222,8 +3105,6 @@ textarea:focus {
         position: relative !important;
         padding: clamp(35px, 7vw, 50px) clamp(20px, 4vw, 30px) !important;
         padding-bottom: clamp(40px, 8vw, 55px) !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
     .detail-card::before {
@@ -3262,6 +3143,7 @@ textarea:focus {
        DISABLE OTHER ANIMATIONS
        ======================================================================== */
     
+    .terminal-window,
     .terminal-window::before,
     .terminal-window::after,
     .terminal-body::before,
@@ -3293,16 +3175,21 @@ textarea:focus {
         box-shadow: 
             0 0 25px rgba(0, 243, 255, 0.5),
             inset 0 0 20px rgba(0, 243, 255, 0.15) !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
-    /* Touch feedback with GPU acceleration */
+    .terminal-window {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.9),
+            0 0 50px rgba(0, 243, 255, 0.4),
+            inset 0 0 40px rgba(0, 243, 255, 0.1) !important;
+    }
+    
+    /* Touch feedback */
     .cyber-btn:active,
     .detail-card:active,
     .highlight-box:active {
-        transform: scale(0.98) translateZ(0) !important;
-        transition: transform 0.08s ease-out !important;
+        transform: scale(0.98) !important;
+        transition: transform 0.08s !important;
     }
     
     /* Fix footer */
@@ -3311,11 +3198,9 @@ textarea:focus {
             transparent 0%,
             rgba(5, 8, 22, 0.6) 20%,
             rgba(5, 8, 22, 0.95) 40%) !important;
-        transform: translateZ(0);
-        backface-visibility: hidden;
     }
     
-    /* Static positioning with GPU acceleration */
+    /* Static positioning */
     .hero-title,
     .year-display,
     .hero-subtitle,
@@ -3323,17 +3208,12 @@ textarea:focus {
     .dept-frame,
     .terminal-window {
         opacity: 1 !important;
-        transform: translateZ(0) !important;
-        backface-visibility: hidden;
+        transform: none !important;
     }
     
-    /* Optimize all interactive elements */
-    button,
-    .detail-card,
-    .highlight-box,
-    .binary-block {
-        transform: translateZ(0);
-        backface-visibility: hidden;
+    /* Disable will-change to save GPU */
+    * {
+        will-change: auto !important;
     }
 }
 
@@ -3345,6 +3225,7 @@ textarea:focus {
    END OF COMPLETE CSS
 
    ============================================================================ */
+
 
 
 
