@@ -2647,86 +2647,505 @@ textarea:focus {
     }
 }
 
-// ============================================================================
-// MOBILE PERFORMANCE - ABSOLUTE ZERO ANIMATION MODE
-// ============================================================================
-
-if (window.innerWidth <= 768) {
-    // Kill ALL animation functions
-    window.updateParallax = function() {};
-    window.drawMatrix = function() {};
-    window.animateParticles = function() {};
-    
-    // Remove all event listeners
-    window.removeEventListener('scroll', updateParallax);
-    window.removeEventListener('mousemove', () => {});
-    
-    // Clear all intervals
-    const highestId = setTimeout(() => {}, 0);
-    for (let i = 0; i < highestId; i++) {
-        clearInterval(i);
-        clearTimeout(i);
+/* ============================================================================
+   MOBILE OPTIMIZATION - MATCHES PC THEME + STATIC PARALLAX ILLUSION
+   ============================================================================ */
+@media (max-width: 768px) {
+    /* Hide ALL animated elements */
+    #particles,
+    #matrix-rain,
+    .scan-line,
+    .scan-line-v,
+    .holo-overlay,
+    .glitch-overlay,
+    .hex-container,
+    .hero-bg-shapes,
+    .floating-tech-objects,
+    .floating-robot,
+    .flying-drone,
+    .footer-waves,
+    .footer-grid,
+    .energy-field,
+    .holo-lines,
+    .btn-scan,
+    .card-glow,
+    .box-glow,
+    .card-hologram,
+    .box-border,
+    .card-data-stream,
+    .box-pulse {
+        display: none !important;
     }
     
-    // Force everything visible on load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Make all sections immediately visible
-        const sections = document.querySelectorAll('section, .section-content, .detail-card, .highlight-box, .terminal-window');
-        sections.forEach(el => {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.animation = 'none';
-            el.style.transition = 'none';
-        });
-        
-        // Fix body
-        document.body.style.backgroundAttachment = 'fixed';
-        document.body.style.backgroundColor = '#000000';
-        
-        // Disable CSS animations via style injection
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @media (max-width: 768px) {
-                * {
-                    animation: none !important;
-                    transition: none !important;
-                }
-                .terminal-cursor {
-                    animation: cursorBlink 1s steps(2, start) infinite !important;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Force reflow
-        document.body.offsetHeight;
-    });
+    /* ========================================================================
+       GOD TIER BACKGROUND - MATCHES PC + PARALLAX ILLUSION
+       ======================================================================== */
     
-    // Optimize scrolling
-    let scrollTimeout;
-    window.addEventListener('scroll', () => {
-        document.body.style.pointerEvents = 'none';
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            document.body.style.pointerEvents = 'auto';
-        }, 50);
-    }, { passive: true });
+    /* Layer 1: Deep Space Foundation (Same brightness as PC) */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        background: 
+            /* Main Nebula clouds - Cyan (matches PC) */
+            radial-gradient(ellipse at 15% 25%, rgba(0, 243, 255, 0.22) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 75%, rgba(0, 243, 255, 0.18) 0%, transparent 50%),
+            
+            /* Nebula clouds - Pink/Purple (matches PC) */
+            radial-gradient(ellipse at 70% 20%, rgba(255, 0, 255, 0.20) 0%, transparent 48%),
+            radial-gradient(ellipse at 30% 80%, rgba(157, 0, 255, 0.18) 0%, transparent 52%),
+            
+            /* Nebula clouds - Green (matches PC) */
+            radial-gradient(ellipse at 50% 50%, rgba(0, 255, 157, 0.15) 0%, transparent 55%),
+            radial-gradient(ellipse at 40% 60%, rgba(0, 255, 157, 0.12) 0%, transparent 40%),
+            
+            /* Additional depth orbs */
+            radial-gradient(circle at 10% 10%, rgba(0, 243, 255, 0.10) 0%, transparent 35%),
+            radial-gradient(circle at 90% 90%, rgba(255, 0, 255, 0.10) 0%, transparent 35%),
+            radial-gradient(circle at 50% 30%, rgba(157, 0, 255, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 25% 70%, rgba(0, 243, 255, 0.08) 0%, transparent 30%),
+            radial-gradient(circle at 75% 40%, rgba(255, 0, 255, 0.08) 0%, transparent 30%),
+            
+            /* Bright starfield */
+            radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.9) 0.5px, transparent 1px),
+            radial-gradient(circle at 60% 25%, rgba(0, 243, 255, 1) 0.8px, transparent 1.5px),
+            radial-gradient(circle at 80% 55%, rgba(255, 0, 255, 1) 0.6px, transparent 1.2px),
+            radial-gradient(circle at 35% 85%, rgba(0, 255, 157, 1) 0.7px, transparent 1.3px),
+            radial-gradient(circle at 15% 45%, rgba(255, 255, 255, 0.8) 0.5px, transparent 1px),
+            radial-gradient(circle at 45% 35%, rgba(0, 243, 255, 0.7) 0.4px, transparent 0.8px),
+            radial-gradient(circle at 65% 65%, rgba(255, 0, 255, 0.7) 0.4px, transparent 0.8px),
+            
+            /* Fade to black at bottom (smooth) */
+            linear-gradient(180deg, 
+                rgba(5, 8, 22, 0) 0%,
+                rgba(5, 8, 22, 0) 60%,
+                rgba(5, 8, 22, 0.6) 80%,
+                rgba(5, 8, 22, 0.95) 100%),
+            
+            /* Base gradient (matches PC) */
+            linear-gradient(180deg, 
+                #020408 0%, 
+                #0a0e27 20%,
+                #0f1438 40%, 
+                #0a0e27 60%,
+                #05081a 80%, 
+                #020408 100%);
+        
+        background-size: 
+            120% 120%, 120% 120%,
+            110% 110%, 130% 130%,
+            140% 140%, 100% 100%,
+            80% 80%, 80% 80%, 90% 90%, 70% 70%, 75% 75%,
+            100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+            100% 100%,
+            100% 100%;
+        
+        background-position: 
+            15% 25%, 85% 75%,
+            70% 20%, 30% 80%,
+            50% 50%, 40% 60%,
+            10% 10%, 90% 90%, 50% 30%, 25% 70%, 75% 40%,
+            20% 15%, 60% 25%, 80% 55%, 35% 85%, 15% 45%, 45% 35%, 65% 65%,
+            top,
+            center;
+    }
     
-    // Disable requestAnimationFrame loops
-    const originalRAF = window.requestAnimationFrame;
-    window.requestAnimationFrame = function(callback) {
-        // Only allow cursor blink
-        if (callback.toString().includes('cursorBlink')) {
-            return originalRAF(callback);
-        }
-        return null;
-    };
+    /* Layer 2: Advanced Grid System (matches PC) */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        background: 
+            /* Primary grid - Cyan */
+            linear-gradient(0deg, transparent 97%, rgba(0, 243, 255, 0.15) 100%),
+            linear-gradient(90deg, transparent 97%, rgba(0, 243, 255, 0.15) 100%),
+            
+            /* Secondary grid - Pink */
+            linear-gradient(0deg, transparent 95%, rgba(255, 0, 255, 0.10) 100%),
+            linear-gradient(90deg, transparent 95%, rgba(255, 0, 255, 0.10) 100%),
+            
+            /* Fine grid - Green */
+            linear-gradient(0deg, transparent 98.5%, rgba(0, 255, 157, 0.08) 100%),
+            linear-gradient(90deg, transparent 98.5%, rgba(0, 255, 157, 0.08) 100%),
+            
+            /* Diagonal tech lines */
+            linear-gradient(45deg, transparent 48%, rgba(0, 243, 255, 0.08) 50%, transparent 52%),
+            linear-gradient(135deg, transparent 48%, rgba(255, 0, 255, 0.08) 50%, transparent 52%),
+            linear-gradient(-45deg, transparent 48%, rgba(0, 255, 157, 0.06) 50%, transparent 52%),
+            
+            /* Circuit board traces */
+            repeating-linear-gradient(0deg, 
+                transparent, 
+                transparent 35px, 
+                rgba(0, 243, 255, 0.06) 36px, 
+                transparent 37px,
+                transparent 70px,
+                rgba(0, 255, 157, 0.05) 71px,
+                transparent 72px),
+            repeating-linear-gradient(90deg, 
+                transparent, 
+                transparent 35px, 
+                rgba(255, 0, 255, 0.06) 36px, 
+                transparent 37px,
+                transparent 70px,
+                rgba(157, 0, 255, 0.05) 71px,
+                transparent 72px),
+            
+            /* Dot matrix pattern */
+            radial-gradient(circle at center, rgba(0, 243, 255, 0.18) 0.5px, transparent 1px),
+            
+            /* Fade to black at bottom */
+            linear-gradient(180deg, 
+                transparent 0%,
+                transparent 65%,
+                rgba(5, 8, 22, 0.7) 85%,
+                rgba(5, 8, 22, 0.95) 100%);
+        
+        background-size: 
+            50px 50px, 50px 50px,
+            100px 100px, 100px 100px,
+            25px 25px, 25px 25px,
+            150px 150px, 150px 150px, 120px 120px,
+            70px 70px,
+            70px 70px,
+            20px 20px,
+            100% 100%;
+        
+        background-position: 
+            0 0, 0 0,
+            25px 25px, 25px 25px,
+            12.5px 12.5px, 12.5px 12.5px,
+            0 0, 0 0, 0 0,
+            0 0,
+            0 0,
+            0 0,
+            top;
+    }
+    
+    /* Layer 3: Enhanced Cyber Grid (matches PC) */
+    .cyber-grid {
+        display: block !important;
+        background: 
+            /* Hexagonal honeycomb - Cyan */
+            linear-gradient(30deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
+            linear-gradient(150deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
+            linear-gradient(30deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
+            linear-gradient(150deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
+            
+            /* Hexagonal honeycomb - Pink */
+            linear-gradient(30deg, transparent 10%, rgba(255, 0, 255, 0.04) 11.5%, transparent 13%, transparent 87%, rgba(255, 0, 255, 0.04) 88.5%, transparent 90%),
+            linear-gradient(150deg, transparent 10%, rgba(255, 0, 255, 0.04) 11.5%, transparent 13%, transparent 87%, rgba(255, 0, 255, 0.04) 88.5%, transparent 90%),
+            
+            /* Smaller hexagonal overlay */
+            linear-gradient(30deg, transparent 10%, rgba(0, 255, 157, 0.03) 12%, transparent 13%, transparent 87%, rgba(0, 255, 157, 0.03) 88%, transparent 90%),
+            linear-gradient(150deg, transparent 10%, rgba(0, 255, 157, 0.03) 12%, transparent 13%, transparent 87%, rgba(0, 255, 157, 0.03) 88%, transparent 90%),
+            
+            /* Tech circuit lines */
+            linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.06) 50%, transparent 51%),
+            linear-gradient(90deg, transparent 49%, rgba(255, 0, 255, 0.06) 50%, transparent 51%),
+            
+            /* Additional circuit traces */
+            linear-gradient(0deg, transparent 49.5%, rgba(0, 255, 157, 0.04) 50%, transparent 50.5%),
+            linear-gradient(90deg, transparent 49.5%, rgba(157, 0, 255, 0.04) 50%, transparent 50.5%),
+            
+            /* Dot matrix for tech feel */
+            radial-gradient(circle at center, rgba(0, 243, 255, 0.15) 0.8px, transparent 1.2px),
+            
+            /* Diagonal stripes - multiple layers */
+            repeating-linear-gradient(45deg,
+                transparent,
+                transparent 70px,
+                rgba(0, 243, 255, 0.025) 71px,
+                transparent 72px),
+            repeating-linear-gradient(-45deg,
+                transparent,
+                transparent 70px,
+                rgba(255, 0, 255, 0.025) 71px,
+                transparent 72px),
+            repeating-linear-gradient(30deg,
+                transparent,
+                transparent 90px,
+                rgba(0, 255, 157, 0.02) 91px,
+                transparent 92px);
+        
+        background-size: 
+            70px 122px, 70px 122px, 70px 122px, 70px 122px,
+            70px 122px, 70px 122px,
+            50px 87px, 50px 87px,
+            80px 80px, 80px 80px,
+            120px 120px, 120px 120px,
+            22px 22px,
+            140px 140px, 140px 140px, 180px 180px;
+        
+        background-position: 
+            0 0, 0 0, 35px 61px, 35px 61px,
+            17.5px 30.5px, 17.5px 30.5px,
+            25px 43.5px, 25px 43.5px,
+            0 0, 0 0,
+            0 0, 0 0,
+            0 0,
+            0 0, 0 0, 0 0;
+        
+        animation: none !important;
+        opacity: 0.6;
+    }
+    
+    /* Layer 4: Tech Rings & Energy Circles (matches PC) */
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        background: 
+            /* Large tech rings - Cyan */
+            radial-gradient(circle at 20% 30%, transparent 17%, rgba(0, 243, 255, 0.15) 18%, transparent 19%, transparent 19.5%, rgba(0, 243, 255, 0.10) 20%, transparent 21%),
+            radial-gradient(circle at 80% 70%, transparent 14%, rgba(0, 243, 255, 0.15) 15%, transparent 16%, transparent 16.5%, rgba(0, 243, 255, 0.10) 17%, transparent 18%),
+            
+            /* Large tech rings - Pink */
+            radial-gradient(circle at 50% 50%, transparent 24%, rgba(255, 0, 255, 0.12) 25%, transparent 26%, transparent 26.5%, rgba(255, 0, 255, 0.08) 27%, transparent 28%),
+            
+            /* Medium tech rings - Green */
+            radial-gradient(circle at 10% 80%, transparent 9%, rgba(0, 255, 157, 0.12) 10%, transparent 11%, transparent 11.5%, rgba(0, 255, 157, 0.08) 12%, transparent 13%),
+            radial-gradient(circle at 90% 20%, transparent 11%, rgba(0, 255, 157, 0.12) 12%, transparent 13%, transparent 13.5%, rgba(0, 255, 157, 0.08) 14%, transparent 15%),
+            
+            /* Small tech rings - Purple */
+            radial-gradient(circle at 35% 25%, transparent 6%, rgba(157, 0, 255, 0.12) 7%, transparent 8%),
+            radial-gradient(circle at 65% 75%, transparent 7%, rgba(157, 0, 255, 0.12) 8%, transparent 9%),
+            
+            /* Accent glow dots - Bright */
+            radial-gradient(circle at 30% 15%, rgba(0, 243, 255, 0.4) 1.5px, transparent 3px),
+            radial-gradient(circle at 70% 85%, rgba(255, 0, 255, 0.4) 1.5px, transparent 3px),
+            radial-gradient(circle at 15% 60%, rgba(0, 255, 157, 0.4) 1.2px, transparent 2.5px),
+            radial-gradient(circle at 85% 40%, rgba(157, 0, 255, 0.4) 1.2px, transparent 2.5px),
+            radial-gradient(circle at 45% 55%, rgba(0, 243, 255, 0.35) 1px, transparent 2px);
+        
+        background-size: 
+            550px 550px, 450px 450px,
+            750px 750px,
+            350px 350px, 400px 400px,
+            250px 250px, 280px 280px,
+            100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+        
+        background-position: 
+            20% 30%, 80% 70%,
+            50% 50%,
+            10% 80%, 90% 20%,
+            35% 25%, 65% 75%,
+            30% 15%, 70% 85%, 15% 60%, 85% 40%, 45% 55%;
+    }
+    
+    /* ========================================================================
+       STATIC PARALLAX ILLUSION - Multiple offset layers create depth
+       ======================================================================== */
+    
+    /* Offset layers at different distances */
+    .dept-section::before,
+    .message-section::before,
+    .details-section::before,
+    .highlights-section::before {
+        content: '';
+        position: absolute;
+        top: -10%;
+        left: -5%;
+        width: 110%;
+        height: 120%;
+        z-index: 0;
+        pointer-events: none;
+        background: 
+            radial-gradient(circle at 30% 40%, rgba(0, 243, 255, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 70% 60%, rgba(255, 0, 255, 0.06) 0%, transparent 50%);
+        background-size: 200% 200%;
+    }
+    
+    .dept-section::before {
+        background-position: 25% 30%;
+    }
+    
+    .message-section::before {
+        background-position: 75% 70%;
+    }
+    
+    .details-section::before {
+        background-position: 40% 50%;
+    }
+    
+    .highlights-section::before {
+        background-position: 60% 45%;
+    }
+    
+    /* ========================================================================
+       DISABLE ALL ANIMATIONS
+       ======================================================================== */
+    
+    /* Disable ALL keyframe animations */
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition: none !important;
+        transform: none !important;
+    }
+    
+    /* Exception: Touch feedback only */
+    .cyber-btn:active,
+    .detail-card:active,
+    .highlight-box:active {
+        transform: scale(0.98) !important;
+        transition: transform 0.05s !important;
+    }
+    
+    /* Static positioning */
+    .hero-title,
+    .year-display,
+    .hero-subtitle,
+    .scroll-indicator,
+    .dept-name,
+    .dept-frame,
+    .terminal-window,
+    .detail-card,
+    .highlight-box,
+    .section-title,
+    .footer-section {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    /* Terminal - completely static */
+    .terminal-window {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.9),
+            0 0 50px rgba(0, 243, 255, 0.4),
+            inset 0 0 40px rgba(0, 243, 255, 0.1) !important;
+    }
+    
+    /* Terminal cursor - ONLY blinking element */
+    .terminal-cursor {
+        animation: cursorBlink 1s steps(2, start) infinite !important;
+    }
+    
+    @keyframes cursorBlink {
+        50% { opacity: 0; }
+    }
+    
+    /* Static lines on boxes */
+    .detail-card::before,
+    .highlight-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, 
+            var(--neon-cyan), 
+            var(--neon-pink), 
+            var(--neon-green), 
+            var(--neon-cyan));
+        box-shadow: 0 0 10px var(--neon-cyan);
+        z-index: 10;
+    }
+    
+    .detail-card::after,
+    .highlight-box::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, 
+            var(--neon-cyan), 
+            var(--neon-pink), 
+            var(--neon-green), 
+            var(--neon-cyan));
+        box-shadow: 0 0 10px var(--neon-cyan);
+        z-index: 10;
+    }
+    
+    /* Static glows (matches PC) */
+    .hero-title,
+    .dept-name,
+    .section-title,
+    .message-text,
+    .footer-highlight {
+        text-shadow: 
+            0 0 15px currentColor,
+            0 0 30px currentColor,
+            0 2px 10px rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .frame-corner {
+        box-shadow: 0 0 15px var(--neon-cyan) !important;
+    }
+    
+    .cyber-btn {
+        box-shadow: 
+            0 0 25px rgba(0, 243, 255, 0.5),
+            inset 0 0 20px rgba(0, 243, 255, 0.15) !important;
+    }
+    
+    .detail-card,
+    .highlight-box {
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.7),
+            0 0 25px rgba(0, 243, 255, 0.3),
+            inset 0 0 20px rgba(0, 243, 255, 0.08) !important;
+    }
+    
+    .card-icon,
+    .box-icon {
+        filter: drop-shadow(0 0 15px currentColor) !important;
+    }
+    
+    .terminal-dot {
+        box-shadow: 0 0 12px currentColor !important;
+    }
+    
+    .status-indicator {
+        box-shadow: 0 0 15px var(--neon-cyan) !important;
+    }
+    
+    /* Disable will-change */
+    * {
+        will-change: auto !important;
+    }
+    
+    /* Smooth footer fade */
+    .footer-section {
+        background: linear-gradient(180deg, 
+            transparent 0%,
+            rgba(5, 8, 22, 0.6) 20%,
+            rgba(5, 8, 22, 0.95) 40%) !important;
+    }
+    
+    /* Fix background attachment */
+    body {
+        background-attachment: fixed !important;
+        background-color: #05081a !important;
+    }
 }
 
 /* ============================================================================
    END OF COMPLETE CSS
 
    ============================================================================ */
+
 
 
 
