@@ -1225,7 +1225,7 @@ function displayInvitation(dept, deptId) {
     highlightsList.innerHTML = '';
     
     // Icon pool for highlights
-    const icons = ['🧠', '⚡', '🤖', '🚀', '💡', '🎯', '🔬', '🌐'];
+    const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮','💻',];
 
     // Create a highlight box for each event
     dept.highlights.forEach((highlight, index) => {
