@@ -575,7 +575,6 @@ async function saveInvitation() {
 
     // ========================================================================
     // SHOW LOADING STATE
-    // Disable button and show loading message during save operation
     // ========================================================================
     
     btn.innerHTML = '<span>⏳ SAVING DATA...</span>';
@@ -586,7 +585,6 @@ async function saveInvitation() {
     try {
         // ====================================================================
         // HANDLE PUBLIC INVITATION
-        // Special handling for the public (default) invitation
         // ====================================================================
         
         if (deptId === 'PUBLIC') {
@@ -618,7 +616,7 @@ async function saveInvitation() {
                 throw new Error('Failed to save PUBLIC invitation to storage');
             }
 
-            // Show success message with visual feedback
+            // Show success message
             btn.innerHTML = '<span>✓ PUBLIC INVITATION SAVED</span><div class="btn-particles"></div>';
             btn.style.background = 'linear-gradient(135deg, #00ff9d, #00f3ff)';
             btn.style.opacity = '1';
@@ -635,7 +633,7 @@ async function saveInvitation() {
                 document.getElementById('deptName').disabled = false;
             }, 2500);
 
-            // Update display if currently viewing public invitation
+            // **FIX: Update display immediately if viewing public page**
             const currentDeptId = getDeptIdFromURL();
             if (!currentDeptId) {
                 displayDefaultInvitation();
@@ -646,10 +644,9 @@ async function saveInvitation() {
         } 
         // ====================================================================
         // HANDLE DEPARTMENT-SPECIFIC INVITATION
-        // Standard handling for individual department invitations
         // ====================================================================
         else {
-            // Build department data object with defaults
+            // Build department data object
             const deptData = {
                 name: deptName,
                 eventName: eventName || 'DOTTECH',
@@ -671,14 +668,14 @@ async function saveInvitation() {
             // Save to in-memory cache
             departments[deptId] = deptData;
             
-            // Save to persistent storage with 'dept:' prefix
+            // Save to persistent storage
             const saveSuccess = await UniversalStorage.set(`dept:${deptId}`, deptData, true);
             
             if (!saveSuccess) {
                 throw new Error('Failed to save department to storage');
             }
 
-            // Show success message with visual feedback
+            // Show success message
             btn.innerHTML = '<span>✓ SAVED SUCCESSFULLY</span><div class="btn-particles"></div>';
             btn.style.background = 'linear-gradient(135deg, #00ff9d, #00f3ff)';
             btn.style.opacity = '1';
@@ -691,40 +688,35 @@ async function saveInvitation() {
                 btn.disabled = false;
             }, 2500);
 
-            // Reload department list in dropdown to show new entry
+            // **FIX: Reload department list in dropdown**
             await loadAllDepartments();
 
-            // Update display if currently viewing this department
+            // **FIX: Force update display immediately**
             const currentDeptId = getDeptIdFromURL();
             if (currentDeptId === deptId) {
+                // If viewing this department, update immediately
                 displayInvitation(deptData, deptId);
+            } else if (!currentDeptId) {
+                // If on public page, reload default
+                displayDefaultInvitation();
             }
 
-            // If no dept parameter in URL, update display
-            if (!currentDeptId) {
-                displayInvitation(deptData, deptId);
-            }
-
-            console.log('✅ Department saved successfully:', deptId, deptData);
+            console.log('✅ Department saved and displayed:', deptId, deptData);
         }
 
     } catch (error) {
         // ====================================================================
         // ERROR HANDLING
-        // Handle any errors during save operation with user feedback
         // ====================================================================
         
         console.error('❌ Save error:', error);
         
-        // Show error message on button
         btn.innerHTML = '<span>❌ SAVE FAILED</span>';
         btn.style.background = 'linear-gradient(135deg, #ff0055, #ff6b00)';
         btn.style.opacity = '1';
         
-        // Alert user with error details
         alert('❌ FAILED TO SAVE DATA\n\nError: ' + error.message + '\n\nPlease try again or check your internet connection.');
         
-        // Reset button after delay
         setTimeout(() => {
             btn.innerHTML = originalText;
             btn.style.background = '';
@@ -2286,3 +2278,4 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
