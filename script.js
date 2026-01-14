@@ -19,103 +19,85 @@ if (navigator.hardwareConcurrency <= 4 || window.innerWidth <= 768) {
 }
 
 // ============================================================================
-// UNIVERSAL STORAGE SYSTEM - Works Everywhere (localStorage fallback)
-// Provides a unified API that works with both Claude storage and localStorage
-// Automatically falls back to localStorage for deployment on Vercel/hosting
+// FIREBASE CONFIGURATION
+// Replace with YOUR config from Firebase Console (Step 3)
+// ============================================================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSP_7bjXETPIrUZxJ_sA9EC41fNEnqSFc",
+  authDomain: "dottech-invitations.firebaseapp.com",
+  databaseURL: "https://dottech-invitations-default-rtdb.firebaseio.com",
+  projectId: "dottech-invitations",
+  storageBucket: "dottech-invitations.firebasestorage.app",
+  messagingSenderId: "174452294538",
+  appId: "1:174452294538:web:8fb403fdc67269ca4cfe73"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// ============================================================================
+// UNIVERSAL STORAGE SYSTEM - NOW WITH FIREBASE REALTIME DATABASE!
+// Works across ALL devices - PC, Mobile, Tablets, anywhere in the world!
+// Data syncs instantly via Firebase Cloud ☁️
 // ============================================================================
 
 const UniversalStorage = {
     /**
-     * Check if Claude's storage API is available in the current environment
-     * @returns {boolean} True if Claude storage API exists
-     */
-    isClaudeStorageAvailable() {
-        return typeof window.storage !== 'undefined' && 
-               typeof window.storage.get === 'function';
-    },
-
-    /**
-     * Get data from storage (tries Claude storage first, falls back to localStorage)
+     * Get data from Firebase Realtime Database
      * @param {string} key - The storage key to retrieve
-     * @param {boolean} shared - Whether to use shared storage (Claude storage only)
-     * @returns {Promise<any>} Parsed JSON data or null if not found
+     * @param {boolean} shared - Whether to use shared storage (always true for Firebase)
+     * @returns {Promise<any>} Data object or null if not found
      */
     async get(key, shared = true) {
-        // Try Claude storage first
         try {
-            if (this.isClaudeStorageAvailable()) {
-                const result = await window.storage.get(key, shared);
-                if (result && result.value) {
-                    return JSON.parse(result.value);
-                }
+            const snapshot = await database.ref(key).once('value');
+            const data = snapshot.val();
+            
+            if (data) {
+                console.log(`✓ Loaded from Firebase: ${key}`);
+                return data;
             }
+            return null;
         } catch (error) {
-            console.log('Claude storage unavailable, using localStorage');
-        }
-
-        // Fallback to localStorage (works on Vercel and all browsers)
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : null;
-        } catch (error) {
-            console.error('Storage error:', error);
+            console.error('Firebase get error:', error);
             return null;
         }
     },
 
     /**
-     * Set data in storage (saves to both Claude storage and localStorage)
+     * Set data in Firebase Realtime Database
      * @param {string} key - The storage key
-     * @param {any} value - The value to store (will be JSON stringified)
-     * @param {boolean} shared - Whether to use shared storage (Claude storage only)
+     * @param {any} value - The value to store (object/array/string)
+     * @param {boolean} shared - Whether to use shared storage (always true for Firebase)
      * @returns {Promise<boolean>} True if save was successful
      */
     async set(key, value, shared = true) {
-        const stringValue = JSON.stringify(value);
-        
-        // Try saving to Claude storage
         try {
-            if (this.isClaudeStorageAvailable()) {
-                await window.storage.set(key, stringValue, shared);
-                console.log(`✓ Saved to Claude storage: ${key}`);
-            }
-        } catch (error) {
-            console.log('Using localStorage instead');
-        }
-
-        // Always save to localStorage as backup (works on Vercel)
-        try {
-            localStorage.setItem(key, stringValue);
-            console.log(`✓ Saved to localStorage: ${key}`);
+            await database.ref(key).set(value);
+            console.log(`✓ Saved to Firebase Cloud: ${key}`);
             return true;
         } catch (error) {
-            console.error('Failed to save:', error);
+            console.error('Firebase set error:', error);
+            alert('⚠️ Failed to save to cloud. Please check your internet connection.');
             return false;
         }
     },
 
     /**
-     * Delete data from storage (removes from both Claude storage and localStorage)
+     * Delete data from Firebase Realtime Database
      * @param {string} key - The storage key to delete
-     * @param {boolean} shared - Whether to use shared storage (Claude storage only)
+     * @param {boolean} shared - Whether to use shared storage (always true for Firebase)
      * @returns {Promise<boolean>} True if deletion was successful
      */
     async delete(key, shared = true) {
-        // Try deleting from Claude storage
         try {
-            if (this.isClaudeStorageAvailable()) {
-                await window.storage.delete(key, shared);
-            }
-        } catch (error) {
-            console.log('Claude storage delete failed');
-        }
-
-        // Delete from localStorage
-        try {
-            localStorage.removeItem(key);
+            await database.ref(key).remove();
+            console.log(`✓ Deleted from Firebase: ${key}`);
             return true;
         } catch (error) {
-            console.error('Failed to delete:', error);
+            console.error('Firebase delete error:', error);
             return false;
         }
     },
@@ -123,31 +105,20 @@ const UniversalStorage = {
     /**
      * List all keys with a given prefix
      * @param {string} prefix - The key prefix to filter by
-     * @param {boolean} shared - Whether to use shared storage (Claude storage only)
+     * @param {boolean} shared - Whether to use shared storage (always true for Firebase)
      * @returns {Promise<string[]>} Array of matching keys
      */
     async list(prefix = '', shared = true) {
-        // Try Claude storage list
         try {
-            if (this.isClaudeStorageAvailable()) {
-                const result = await window.storage.list(prefix, shared);
-                if (result && result.keys) {
-                    return result.keys;
-                }
-            }
+            const snapshot = await database.ref().once('value');
+            const data = snapshot.val() || {};
+            const keys = Object.keys(data).filter(k => k.startsWith(prefix));
+            console.log(`✓ Listed ${keys.length} keys from Firebase with prefix: ${prefix}`);
+            return keys;
         } catch (error) {
-            console.log('Using localStorage list');
+            console.error('Firebase list error:', error);
+            return [];
         }
-
-        // Fallback: get all localStorage keys matching prefix
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.startsWith(prefix)) {
-                keys.push(key);
-            }
-        }
-        return keys;
     }
 };
 
@@ -2195,6 +2166,7 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
 
 
 
