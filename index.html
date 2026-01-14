@@ -652,14 +652,20 @@
 ========================================= -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<script src="firebase-config.js" onerror="loadConfigFromAPI()"></script>
 <script>
+  // Define function FIRST before using it
   function loadConfigFromAPI() {
     const script = document.createElement('script');
     script.src = '/api/config';
+    script.onerror = function() {
+      console.error('❌ Failed to load Firebase config from API');
+    };
     document.head.appendChild(script);
   }
 </script>
+
+<!-- Try loading local config, fallback to API if it fails -->
+<script src="firebase-config.js" onerror="loadConfigFromAPI()"></script>
 
 <!-- ========================================
      FIREBASE REALTIME DATABASE
