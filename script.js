@@ -23,19 +23,46 @@ if (navigator.hardwareConcurrency <= 4 || window.innerWidth <= 768) {
 // Replace with YOUR config from Firebase Console (Step 3)
 // ============================================================================
 
-const firebaseConfig = window.FIREBASE_CONFIG || {
-  apiKey: "PLACEHOLDER_API_KEY",
-  authDomain: "PLACEHOLDER.firebaseapp.com",
-  databaseURL: "https://PLACEHOLDER-default-rtdb.firebaseio.com",
-  projectId: "PLACEHOLDER",
-  storageBucket: "PLACEHOLDER.appspot.com",
-  messagingSenderId: "PLACEHOLDER",
-  appId: "PLACEHOLDER"
-};
+// Wait for config to be loaded from API
+function initializeFirebase() {
+  const firebaseConfig = window.FIREBASE_CONFIG || {
+    apiKey: "PLACEHOLDER_API_KEY",
+    authDomain: "PLACEHOLDER.firebaseapp.com",
+    databaseURL: "https://PLACEHOLDER-default-rtdb.firebaseio.com",
+    projectId: "PLACEHOLDER",
+    storageBucket: "PLACEHOLDER.appspot.com",
+    messagingSenderId: "PLACEHOLDER",
+    appId: "PLACEHOLDER"
+  };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+  console.log('🔥 Initializing Firebase with:', firebaseConfig);
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  window.database = firebase.database();
+  
+  console.log('✅ Firebase initialized successfully');
+}
+
+// Check if config is already loaded
+if (window.FIREBASE_CONFIG) {
+  initializeFirebase();
+} else {
+  // Wait for config to load
+  let checkCount = 0;
+  const checkInterval = setInterval(() => {
+    checkCount++;
+    if (window.FIREBASE_CONFIG) {
+      console.log('✅ Firebase config detected, initializing...');
+      clearInterval(checkInterval);
+      initializeFirebase();
+    } else if (checkCount > 50) { // 5 seconds timeout
+      console.error('❌ Firebase config failed to load after 5 seconds');
+      clearInterval(checkInterval);
+      alert('Failed to load Firebase configuration. Please refresh the page.');
+    }
+  }, 100);
+}
 
 // ============================================================================
 // UNIVERSAL STORAGE SYSTEM - NOW WITH FIREBASE REALTIME DATABASE!
@@ -110,7 +137,7 @@ const UniversalStorage = {
      */
     async list(prefix = '', shared = true) {
         try {
-            const snapshot = await database.ref().once('value');
+            const snapshot = await window.database.ref(key).once('value');
             const data = snapshot.val() || {};
             const keys = Object.keys(data).filter(k => k.startsWith(prefix));
             console.log(`✓ Listed ${keys.length} keys from Firebase with prefix: ${prefix}`);

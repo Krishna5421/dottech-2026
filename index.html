@@ -646,40 +646,28 @@
         </section>
     </div>
 
-    <!-- ========================================
-     EXTERNAL LIBRARIES
-     QR Code generation library
-========================================= -->
+    <!-- QR Code library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+<!-- Load Firebase config SYNCHRONOUSLY (blocking) -->
+<script src="/api/config"></script>
+
+<!-- Add small delay to ensure config is set -->
 <script>
-  // Define function FIRST before using it
-  function loadConfigFromAPI() {
-    const script = document.createElement('script');
-    script.src = '/api/config';
-    script.onerror = function() {
-      console.error('❌ Failed to load Firebase config from API');
-    };
-    document.head.appendChild(script);
+  // Wait for config to be available
+  if (!window.FIREBASE_CONFIG) {
+    console.error('❌ Firebase config not loaded!');
+  } else {
+    console.log('✅ Firebase config ready:', window.FIREBASE_CONFIG);
   }
 </script>
 
-<!-- Try loading local config, fallback to API if it fails -->
-<script src="firebase-config.js" onerror="loadConfigFromAPI()"></script>
-
-<!-- ========================================
-     FIREBASE REALTIME DATABASE
-     Cloud storage for cross-device sync
-========================================= -->
+<!-- Firebase libraries -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
-<!-- ========================================
-     MAIN JAVASCRIPT
-     All interaction and animation logic
-========================================= -->
+<!-- Main JavaScript -->
 <script src="script.js"></script>
 
 </body>
 </html>
-
