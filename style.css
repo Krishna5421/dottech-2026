@@ -2648,7 +2648,7 @@ textarea:focus {
 }
 
 /* ============================================================================
-   MOBILE OPTIMIZATION - ZERO LAG + PERFECT PERFORMANCE
+   MOBILE OPTIMIZATION - ZERO LAG + SUBTLE ANIMATIONS
    ============================================================================ */
 @media (max-width: 768px) {
     /* Hide ALL heavy animated elements */
@@ -2678,10 +2678,10 @@ textarea:focus {
     }
     
     /* ========================================================================
-       OPTIMIZED BACKGROUND - REDUCED LAYERS FOR PERFORMANCE
+       ULTRA-LIGHT BACKGROUND - MINIMAL LAYERS FOR ZERO LAG
        ======================================================================== */
     
-    /* Layer 1: Simplified Deep Space (50% fewer gradients) */
+    /* Layer 1: Super Simple Background */
     body::before {
         content: '';
         position: fixed;
@@ -2692,60 +2692,40 @@ textarea:focus {
         z-index: 0;
         pointer-events: none;
         background: 
-            /* Main Nebula clouds - Only 4 instead of 11 */
-            radial-gradient(ellipse at 15% 25%, rgba(0, 243, 255, 0.22) 0%, transparent 45%),
-            radial-gradient(ellipse at 85% 75%, rgba(255, 0, 255, 0.20) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 50%, rgba(0, 255, 157, 0.15) 0%, transparent 55%),
-            radial-gradient(circle at 75% 40%, rgba(157, 0, 255, 0.12) 0%, transparent 40%),
+            /* Only 2 nebula clouds */
+            radial-gradient(ellipse at 20% 30%, rgba(0, 243, 255, 0.18) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 70%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
             
-            /* Simplified starfield - Only 4 instead of 7 */
-            radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.9) 0.5px, transparent 1px),
-            radial-gradient(circle at 60% 25%, rgba(0, 243, 255, 1) 0.8px, transparent 1.5px),
-            radial-gradient(circle at 80% 55%, rgba(255, 0, 255, 1) 0.6px, transparent 1.2px),
-            radial-gradient(circle at 35% 85%, rgba(0, 255, 157, 1) 0.7px, transparent 1.3px),
+            /* Only 2 stars */
+            radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.8) 0.5px, transparent 1px),
+            radial-gradient(circle at 75% 80%, rgba(0, 243, 255, 0.9) 0.6px, transparent 1px),
             
             /* Fade to darker at bottom */
             linear-gradient(180deg, 
                 rgba(5, 8, 22, 0) 0%,
-                rgba(5, 8, 22, 0) 60%,
                 rgba(5, 8, 22, 0.6) 80%,
                 rgba(5, 8, 22, 0.95) 100%),
             
-            /* Base gradient */
+            /* Simple base gradient */
             linear-gradient(180deg, 
                 #020408 0%, 
-                #0a0e27 30%,
-                #0f1438 50%, 
-                #0a0e27 70%,
+                #0a0e27 50%,
                 #020408 100%);
         
         background-size: 
-            120% 120%, 120% 120%, 140% 140%, 100% 100%,
-            100% 100%, 100% 100%, 100% 100%, 100% 100%,
+            150% 150%, 150% 150%,
+            100% 100%, 100% 100%,
             100% 100%,
             100% 100%;
         
         background-position: 
-            15% 25%, 85% 75%, 50% 50%, 75% 40%,
-            20% 15%, 60% 25%, 80% 55%, 35% 85%,
+            20% 30%, 80% 70%,
+            25% 20%, 75% 80%,
             top,
             center;
-        
-        transition: filter 0.3s ease-out;
-        will-change: filter;
     }
     
-    /* Lighter theme when scrolled up */
-    body.scrolled-up::before {
-        filter: brightness(1.15);
-    }
-    
-    /* Darker theme when scrolled down */
-    body.scrolled-down::before {
-        filter: brightness(0.92);
-    }
-    
-    /* Layer 2: Simplified Grid (50% fewer patterns) */
+    /* Layer 2: Simple Grid Only */
     body::after {
         content: '';
         position: fixed;
@@ -2756,75 +2736,44 @@ textarea:focus {
         z-index: 1;
         pointer-events: none;
         background: 
-            /* Primary grid - Cyan */
-            linear-gradient(0deg, transparent 97%, rgba(0, 243, 255, 0.15) 100%),
-            linear-gradient(90deg, transparent 97%, rgba(0, 243, 255, 0.15) 100%),
-            
-            /* Diagonal lines - Only 2 instead of 3 */
-            linear-gradient(45deg, transparent 48%, rgba(0, 243, 255, 0.08) 50%, transparent 52%),
-            linear-gradient(135deg, transparent 48%, rgba(255, 0, 255, 0.08) 50%, transparent 52%),
-            
-            /* Circuit traces - Only horizontal */
-            repeating-linear-gradient(0deg, 
-                transparent, 
-                transparent 40px, 
-                rgba(0, 243, 255, 0.06) 41px, 
-                transparent 42px),
-            
-            /* Dots */
-            radial-gradient(circle at center, rgba(0, 243, 255, 0.18) 0.5px, transparent 1px),
+            /* Simple grid */
+            linear-gradient(0deg, transparent 98%, rgba(0, 243, 255, 0.1) 100%),
+            linear-gradient(90deg, transparent 98%, rgba(0, 243, 255, 0.1) 100%),
             
             /* Fade at bottom */
             linear-gradient(180deg, 
                 transparent 0%,
-                transparent 65%,
-                rgba(5, 8, 22, 0.7) 85%,
+                rgba(5, 8, 22, 0.8) 90%,
                 rgba(5, 8, 22, 0.95) 100%);
         
         background-size: 
-            50px 50px, 50px 50px,
-            150px 150px, 150px 150px,
-            80px 80px,
-            25px 25px,
+            60px 60px, 60px 60px,
             100% 100%;
         
         background-position: 
             0 0, 0 0,
-            0 0, 0 0,
-            0 0,
-            0 0,
             top;
     }
     
-    /* Layer 3: Simplified Cyber Grid (50% fewer patterns) */
+    /* Layer 3: Minimal Cyber Grid */
     .cyber-grid {
         display: block !important;
         background: 
-            /* Hexagons - Only 2 layers instead of 8 */
-            linear-gradient(30deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
-            linear-gradient(150deg, transparent 10%, rgba(0, 243, 255, 0.05) 11.5%, transparent 13%, transparent 87%, rgba(0, 243, 255, 0.05) 88.5%, transparent 90%),
-            
-            /* Circuit lines - Only horizontal */
-            linear-gradient(0deg, transparent 49%, rgba(0, 243, 255, 0.06) 50%, transparent 51%),
-            
-            /* Dots */
-            radial-gradient(circle at center, rgba(0, 243, 255, 0.15) 0.8px, transparent 1.2px);
+            /* Only 1 hexagon layer */
+            linear-gradient(30deg, transparent 12%, rgba(0, 243, 255, 0.03) 13%, transparent 14%, transparent 86%, rgba(0, 243, 255, 0.03) 87%, transparent 88%),
+            linear-gradient(150deg, transparent 12%, rgba(0, 243, 255, 0.03) 13%, transparent 14%, transparent 86%, rgba(0, 243, 255, 0.03) 87%, transparent 88%);
         
         background-size: 
-            70px 122px, 70px 122px,
-            100px 100px,
-            25px 25px;
+            80px 140px, 80px 140px;
         
         background-position: 
-            0 0, 0 0,
-            0 0,
-            0 0;
+            0 0, 0 0;
         
         animation: none !important;
-        opacity: 0.5;
+        opacity: 0.4;
     }
     
-    /* Layer 4: Simplified Tech Rings (50% fewer) */
+    /* Layer 4: Minimal Tech Rings */
     .hero-section::before {
         content: '';
         position: absolute;
@@ -2835,37 +2784,69 @@ textarea:focus {
         z-index: 1;
         pointer-events: none;
         background: 
-            /* Tech rings - Only 2 instead of 3 */
-            radial-gradient(circle at 20% 30%, transparent 17%, rgba(0, 243, 255, 0.15) 18%, transparent 19%),
-            radial-gradient(circle at 80% 70%, transparent 14%, rgba(255, 0, 255, 0.12) 15%, transparent 16%),
-            
-            /* Glow dots - Only 2 instead of 5 */
-            radial-gradient(circle at 30% 15%, rgba(0, 243, 255, 0.4) 1.5px, transparent 3px),
-            radial-gradient(circle at 70% 85%, rgba(255, 0, 255, 0.4) 1.5px, transparent 3px);
+            /* Only 1 tech ring */
+            radial-gradient(circle at 50% 50%, transparent 20%, rgba(0, 243, 255, 0.08) 21%, transparent 22%);
         
-        background-size: 
-            550px 550px, 450px 450px,
-            100% 100%, 100% 100%;
-        
-        background-position: 
-            20% 30%, 80% 70%,
-            30% 15%, 70% 85%;
+        background-size: 600px 600px;
+        background-position: 50% 50%;
     }
     
     /* ========================================================================
-       OPTIMIZE HERO SECTION - DISABLE HEAVY EFFECTS
+       FIX MESSAGE SECTION LAG - DISABLE ALL EFFECTS
        ======================================================================== */
     
-    /* Remove section backgrounds that cause lag */
-    .dept-section::before,
+    /* Remove all background effects from message section */
+    .message-section,
     .message-section::before,
-    .details-section::before,
-    .highlights-section::before {
+    .message-section::after {
+        background: none !important;
+    }
+    
+    /* Simplify terminal window - remove all pseudo-elements */
+    .terminal-window::before,
+    .terminal-window::after {
         display: none !important;
     }
     
+    .terminal-body::before,
+    .terminal-body::after {
+        display: none !important;
+    }
+    
+    /* Static terminal with simple shadow */
+    .terminal-window {
+        box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.8),
+            0 0 30px rgba(0, 243, 255, 0.3) !important;
+        background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(15, 20, 50, 0.9)) !important;
+    }
+    
+    .terminal-body {
+        background: rgba(0, 0, 0, 0.3) !important;
+    }
+    
     /* ========================================================================
-       FIX SCROLL INDICATOR - SUBTLE ANIMATION
+       ENABLE SUBTLE TITLE ANIMATIONS
+       ======================================================================== */
+    
+    /* DOTTECH title - Very slow glitch */
+    .hero-title.glitch::before,
+    .hero-title.glitch::after {
+        display: block !important;
+        animation-duration: 15s !important;
+        opacity: 0.4 !important;
+    }
+    
+    /* Tech Arena title - Very slow glitch */
+    .section-title .glitch::before,
+    .section-title .glitch::after {
+        display: block !important;
+        animation-duration: 12s !important;
+        opacity: 0.35 !important;
+    }
+    
+    /* ========================================================================
+       FIX SCROLL INDICATOR
        ======================================================================== */
     
     .swipe-hand {
@@ -2906,7 +2887,7 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX TERMINAL HEADER - NO ANIMATIONS
+       FIX TERMINAL HEADER
        ======================================================================== */
     
     .terminal-header {
@@ -2915,6 +2896,7 @@ textarea:focus {
         align-items: center !important;
         justify-content: space-between !important;
         gap: clamp(10px, 2vw, 15px) !important;
+        flex-wrap: wrap !important;
     }
     
     .terminal-controls {
@@ -2922,6 +2904,7 @@ textarea:focus {
         gap: clamp(10px, 2.5vw, 12px) !important;
         align-items: center !important;
         flex-shrink: 0 !important;
+        order: 1 !important;
     }
     
     .terminal-dot {
@@ -2929,7 +2912,7 @@ textarea:focus {
         height: clamp(14px, 3.5vw, 16px) !important;
         border-radius: 50% !important;
         flex-shrink: 0 !important;
-        box-shadow: 0 0 12px currentColor !important;
+        box-shadow: 0 0 10px currentColor !important;
         animation: none !important;
     }
     
@@ -2951,12 +2934,14 @@ textarea:focus {
     }
     
     .terminal-title {
-        flex: 1 !important;
+        flex: 1 1 100% !important;
         text-align: center !important;
         font-size: clamp(14px, 3.5vw, 18px) !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        order: 2 !important;
+        margin: 8px 0 !important;
     }
     
     .terminal-status {
@@ -2965,6 +2950,7 @@ textarea:focus {
         gap: clamp(6px, 1.5vw, 8px) !important;
         flex-shrink: 0 !important;
         font-size: clamp(10px, 2.5vw, 12px) !important;
+        order: 3 !important;
     }
     
     .status-indicator {
@@ -2972,7 +2958,7 @@ textarea:focus {
         height: clamp(10px, 2.5vw, 12px) !important;
         background: var(--neon-cyan) !important;
         border-radius: 50% !important;
-        box-shadow: 0 0 15px var(--neon-cyan) !important;
+        box-shadow: 0 0 12px var(--neon-cyan) !important;
         flex-shrink: 0 !important;
         animation: none !important;
     }
@@ -2986,25 +2972,37 @@ textarea:focus {
        FIX TERMINAL PROMPT
        ======================================================================== */
     
+    .terminal-prompt {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: baseline !important;
+        gap: clamp(4px, 1vw, 6px) !important;
+        color: var(--neon-cyan) !important;
+        margin-bottom: clamp(18px, 4vh, 25px) !important;
+        font-size: clamp(13px, 3vw, 15px) !important;
+        animation: none !important;
+        text-shadow: 0 0 8px rgba(0, 243, 255, 0.6) !important;
+    }
+    
+    .prompt-icon {
+        color: var(--neon-cyan) !important;
+        animation: none !important;
+    }
+    
+    .prompt-path {
+        color: var(--neon-green) !important;
+        text-shadow: 0 0 10px var(--neon-green) !important;
+    }
+    
     .prompt-symbol {
         color: var(--neon-pink) !important;
-        margin: 0 clamp(6px, 1.5vw, 8px) !important;
         animation: none !important;
         opacity: 1 !important;
     }
     
     .prompt-cmd {
         color: var(--neon-cyan) !important;
-        text-shadow: 0 0 10px var(--neon-cyan) !important;
-    }
-    
-    .terminal-prompt {
-        color: var(--neon-cyan) !important;
-        margin-bottom: clamp(18px, 4vh, 25px) !important;
-        font-size: clamp(14px, 3vw, 16px) !important;
-        word-break: break-all !important;
-        animation: none !important;
-        text-shadow: 0 0 10px rgba(0, 243, 255, 0.6) !important;
+        text-shadow: 0 0 8px var(--neon-cyan) !important;
     }
     
     /* ========================================================================
@@ -3012,7 +3010,7 @@ textarea:focus {
        ======================================================================== */
     
     .terminal-cursor {
-        animation: cursorBlinkSlow 2s steps(2, start) infinite !important;
+        animation: cursorBlinkSlow 2.5s steps(2, start) infinite !important;
     }
     
     @keyframes cursorBlinkSlow {
@@ -3020,7 +3018,7 @@ textarea:focus {
     }
     
     /* ========================================================================
-       LOADING SCREEN - SAME AS PC
+       LOADING SCREEN
        ======================================================================== */
     
     .loading-logo {
@@ -3076,7 +3074,7 @@ textarea:focus {
     }
     
     /* ========================================================================
-       FIX BOXES - PROPER LINE PLACEMENT
+       FIX BOXES
        ======================================================================== */
     
     .highlight-box {
@@ -3097,7 +3095,7 @@ textarea:focus {
             var(--neon-pink), 
             var(--neon-green), 
             var(--neon-cyan)) !important;
-        box-shadow: 0 0 10px var(--neon-cyan) !important;
+        box-shadow: 0 0 8px var(--neon-cyan) !important;
         z-index: 10 !important;
     }
     
@@ -3119,7 +3117,7 @@ textarea:focus {
             var(--neon-pink), 
             var(--neon-green), 
             var(--neon-cyan)) !important;
-        box-shadow: 0 0 10px var(--neon-cyan) !important;
+        box-shadow: 0 0 8px var(--neon-cyan) !important;
         z-index: 10 !important;
     }
     
@@ -3135,7 +3133,7 @@ textarea:focus {
             var(--neon-pink), 
             var(--neon-green), 
             var(--neon-cyan)) !important;
-        box-shadow: 0 0 10px var(--neon-cyan) !important;
+        box-shadow: 0 0 8px var(--neon-cyan) !important;
         z-index: 10 !important;
     }
     
@@ -3144,18 +3142,13 @@ textarea:focus {
        ======================================================================== */
     
     .terminal-window,
-    .terminal-window::before,
-    .terminal-window::after,
-    .terminal-body::before,
     .card-icon,
     .box-icon,
     .year-cube,
     .subtitle-word,
     .subtitle-dot,
     .frame-corner,
-    .loading-progress,
-    .glitch::before,
-    .glitch::after {
+    .loading-progress {
         animation: none !important;
     }
     
@@ -3166,22 +3159,15 @@ textarea:focus {
     .message-text,
     .footer-highlight {
         text-shadow: 
-            0 0 15px currentColor,
-            0 0 30px currentColor,
-            0 2px 10px rgba(0, 0, 0, 0.5) !important;
+            0 0 12px currentColor,
+            0 0 25px currentColor,
+            0 2px 8px rgba(0, 0, 0, 0.5) !important;
     }
     
     .cyber-btn {
         box-shadow: 
-            0 0 25px rgba(0, 243, 255, 0.5),
-            inset 0 0 20px rgba(0, 243, 255, 0.15) !important;
-    }
-    
-    .terminal-window {
-        box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.9),
-            0 0 50px rgba(0, 243, 255, 0.4),
-            inset 0 0 40px rgba(0, 243, 255, 0.1) !important;
+            0 0 20px rgba(0, 243, 255, 0.4),
+            inset 0 0 15px rgba(0, 243, 255, 0.1) !important;
     }
     
     /* Touch feedback */
@@ -3196,8 +3182,8 @@ textarea:focus {
     .footer-section {
         background: linear-gradient(180deg, 
             transparent 0%,
-            rgba(5, 8, 22, 0.6) 20%,
-            rgba(5, 8, 22, 0.95) 40%) !important;
+            rgba(5, 8, 22, 0.7) 25%,
+            rgba(5, 8, 22, 0.95) 50%) !important;
     }
     
     /* Static positioning */
@@ -3211,12 +3197,19 @@ textarea:focus {
         transform: none !important;
     }
     
-    /* Disable will-change to save GPU */
+    /* Disable will-change */
     * {
         will-change: auto !important;
     }
+    
+    /* Force hardware acceleration only where needed */
+    .terminal-window,
+    .detail-card,
+    .highlight-box {
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
+    }
 }
-
 /* ============================================================================
    END OF MOBILE OPTIMIZATION
    ============================================================================ */
@@ -3225,6 +3218,7 @@ textarea:focus {
    END OF COMPLETE CSS
 
    ============================================================================ */
+
 
 
 
