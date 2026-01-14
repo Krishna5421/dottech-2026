@@ -24,13 +24,13 @@ if (navigator.hardwareConcurrency <= 4 || window.innerWidth <= 768) {
 // ============================================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDSP_7bjXETPIrUZxJ_sA9EC41fNEnqSFc",
-  authDomain: "dottech-invitations.firebaseapp.com",
-  databaseURL: "https://dottech-invitations-default-rtdb.firebaseio.com",
-  projectId: "dottech-invitations",
-  storageBucket: "dottech-invitations.firebasestorage.app",
-  messagingSenderId: "174452294538",
-  appId: "1:174452294538:web:8fb403fdc67269ca4cfe73"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
@@ -2166,6 +2166,7 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
 
 
 
