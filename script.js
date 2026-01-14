@@ -1106,20 +1106,13 @@ function downloadQR() {
  * Includes progressive loading animation with status messages
  */
 async function showInvitation() {
-    // Get department ID from URL parameter (if any)
     const deptId = getDeptIdFromURL();
     
-    // Get DOM elements
     const loadingScreen = document.getElementById('loadingScreen');
     const loadingProgress = document.getElementById('loadingProgress');
     const loadingStatus = document.getElementById('loadingStatus');
     const invitationWrapper = document.getElementById('invitationWrapper');
 
-    // ========================================================================
-    // LOADING STATUS MESSAGES
-    // Cyberpunk-themed status messages shown during loading
-    // ========================================================================
-    
     const statuses = [
         'INITIALIZING NEURAL LINK...',
         'SCANNING QUANTUM SIGNATURES...',
@@ -1132,68 +1125,48 @@ async function showInvitation() {
     let progress = 0;
     let statusIndex = 0;
 
-    // ========================================================================
-    // LOADING ANIMATION LOOP
-    // Gradually increase progress and cycle through status messages
-    // ========================================================================
-    
     const loadingInterval = setInterval(() => {
-        // Increment progress randomly (more natural feel)
         progress += Math.random() * 20;
         if (progress > 100) progress = 100;
 
-        // Update progress bar width
         loadingProgress.style.width = progress + '%';
 
-        // Update status message
         if (statusIndex < statuses.length) {
             loadingStatus.textContent = statuses[statusIndex];
             statusIndex++;
         }
 
-        // ====================================================================
-        // LOADING COMPLETE
-        // When progress reaches 100%, hide loading screen and show invitation
-        // ====================================================================
-        
         if (progress >= 100) {
             clearInterval(loadingInterval);
 
             setTimeout(async () => {
-                // Hide loading screen with fade animation
                 loadingScreen.classList.add('hidden');
-                
-                // Show invitation content
                 invitationWrapper.style.display = 'block';
 
-                // Small delay before loading invitation data
                 setTimeout(async () => {
-                    // ========================================================
-                    // DEPARTMENT-SPECIFIC INVITATION
-                    // Load and display invitation for specific department
-                    // ========================================================
-                    
+                    // **FIX: ALWAYS RELOAD FRESH DATA FROM STORAGE**
                     if (deptId) {
-                        const deptData = await UniversalStorage.get(`dept:${deptId}`, true);
-                        if (deptData) {
-                            departments[deptId] = deptData;
-                            displayInvitation(deptData, deptId);
+                        // Load department-specific data FRESH from storage
+                        const freshDeptData = await UniversalStorage.get(`dept:${deptId}`, true);
+                        
+                        if (freshDeptData) {
+                            // Update in-memory cache
+                            departments[deptId] = freshDeptData;
+                            // Display fresh data
+                            displayInvitation(freshDeptData, deptId);
+                            console.log('✅ Loaded FRESH data for:', deptId, freshDeptData);
                         } else {
-                            // Department not found, show default
+                            console.warn('⚠️ Department not found:', deptId);
                             displayDefaultInvitation();
                         }
-                    } 
-                    // ========================================================
-                    // PUBLIC/DEFAULT INVITATION
-                    // No department specified in URL
-                    // ========================================================
-                    else {
-                        displayDefaultInvitation();
+                    } else {
+                        // Load PUBLIC invitation FRESH from storage
+                        await displayDefaultInvitation();
                     }
                 }, 100);
             }, 500);
         }
-    }, 200); // Update every 200ms
+    }, 200);
 }
 
 /**
@@ -1279,35 +1252,30 @@ function displayInvitation(dept, deptId) {
  * or uses hardcoded defaults as last resort
  */
 async function displayDefaultInvitation() {
-    // ========================================================================
-    // PRIORITY 1: Load PUBLIC invitation (if saved)
-    // ========================================================================
-    
+    // **FIX: RELOAD PUBLIC DATA FRESH FROM STORAGE**
     const publicData = await UniversalStorage.get('dept:PUBLIC', true);
     
     if (publicData) {
-        // Hide department section for public invitation
+        // Update in-memory cache
+        departments['PUBLIC'] = publicData;
+        
         const deptSection = document.getElementById('deptSection');
         if (deptSection) deptSection.style.display = 'none';
         
-        // Update event name
         document.getElementById('displayEventName').textContent = publicData.eventName;
         document.getElementById('displayEventName').setAttribute('data-text', publicData.eventName);
 
-        // Update tagline
         const taglineParts = publicData.tagline.split('•').map(word => word.trim());
         const taglineHTML = taglineParts.map(word =>
             `<span class="subtitle-word">${word}</span>`
         ).join('<span class="subtitle-dot">•</span>');
         document.getElementById('displayTagline').innerHTML = taglineHTML;
 
-        // Update event details
         document.getElementById('displayDate').textContent = publicData.date;
         document.getElementById('displayTime').textContent = publicData.time;
         document.getElementById('displayVenue').textContent = publicData.venue;
         document.getElementById('displayMsg').textContent = publicData.message;
 
-        // Update highlights
         const highlightsList = document.getElementById('highlightsList');
         highlightsList.innerHTML = '';
         const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
@@ -1325,77 +1293,76 @@ async function displayDefaultInvitation() {
             highlightsList.appendChild(box);
         });
 
-        console.log('Displaying PUBLIC invitation');
+        console.log('✅ Loaded FRESH PUBLIC data:', publicData);
         return;
     }
     
-    // ========================================================================
-    // PRIORITY 2: Load first saved department (excluding PUBLIC)
-    // ========================================================================
+    // **RELOAD ALL DEPARTMENTS FRESH FROM STORAGE**
+    const deptKeys = await UniversalStorage.list('dept:', true);
     
-    const deptKeys = Object.keys(departments).filter(k => k !== 'PUBLIC');
-    
-    if (deptKeys.length > 0) {
+    if (deptKeys && deptKeys.length > 0) {
+        // Load all departments fresh
+        for (let key of deptKeys) {
+            const deptId = key.replace('dept:', '');
+            if (deptId !== 'PUBLIC') {
+                const freshData = await UniversalStorage.get(key, true);
+                if (freshData) {
+                    departments[deptId] = freshData;
+                }
+            }
+        }
+        
         // Get first department
-        const firstDeptId = deptKeys[0];
+        const firstDeptId = Object.keys(departments).filter(k => k !== 'PUBLIC')[0];
         const firstDept = departments[firstDeptId];
         
-        // Hide department section for general display
-        const deptSection = document.getElementById('deptSection');
-        if (deptSection) deptSection.style.display = 'none';
-        
-        // Update event name
-        document.getElementById('displayEventName').textContent = firstDept.eventName || 'DOTTECH';
-        document.getElementById('displayEventName').setAttribute('data-text', firstDept.eventName || 'DOTTECH');
+        if (firstDept) {
+            const deptSection = document.getElementById('deptSection');
+            if (deptSection) deptSection.style.display = 'none';
+            
+            document.getElementById('displayEventName').textContent = firstDept.eventName || 'DOTTECH';
+            document.getElementById('displayEventName').setAttribute('data-text', firstDept.eventName || 'DOTTECH');
 
-        // Update tagline
-        const taglineParts = (firstDept.tagline || 'INNOVATE • DOMINATE • ELEVATE').split('•').map(word => word.trim());
-        const taglineHTML = taglineParts.map(word =>
-            `<span class="subtitle-word">${word}</span>`
-        ).join('<span class="subtitle-dot">•</span>');
-        document.getElementById('displayTagline').innerHTML = taglineHTML;
+            const taglineParts = (firstDept.tagline || 'INNOVATE • DOMINATE • ELEVATE').split('•').map(word => word.trim());
+            const taglineHTML = taglineParts.map(word =>
+                `<span class="subtitle-word">${word}</span>`
+            ).join('<span class="subtitle-dot">•</span>');
+            document.getElementById('displayTagline').innerHTML = taglineHTML;
 
-        // Update event details
-        document.getElementById('displayDate').textContent = firstDept.date;
-        document.getElementById('displayTime').textContent = firstDept.time;
-        document.getElementById('displayVenue').textContent = firstDept.venue;
-        document.getElementById('displayMsg').textContent = firstDept.message || PROFESSIONAL_INVITATION;
+            document.getElementById('displayDate').textContent = firstDept.date;
+            document.getElementById('displayTime').textContent = firstDept.time;
+            document.getElementById('displayVenue').textContent = firstDept.venue;
+            document.getElementById('displayMsg').textContent = firstDept.message || PROFESSIONAL_INVITATION;
 
-        // Update highlights
-        const highlightsList = document.getElementById('highlightsList');
-        highlightsList.innerHTML = '';
-        const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
+            const highlightsList = document.getElementById('highlightsList');
+            highlightsList.innerHTML = '';
+            const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
 
-        firstDept.highlights.forEach((highlight, index) => {
-            const box = document.createElement('div');
-            box.className = 'highlight-box';
-            box.innerHTML = `
-                <div class="box-border"></div>
-                <div class="box-glow"></div>
-                <div class="box-icon">${icons[index % icons.length]}</div>
-                <span class="box-text">${highlight}</span>
-                <div class="box-pulse"></div>
-            `;
-            highlightsList.appendChild(box);
-        });
+            firstDept.highlights.forEach((highlight, index) => {
+                const box = document.createElement('div');
+                box.className = 'highlight-box';
+                box.innerHTML = `
+                    <div class="box-border"></div>
+                    <div class="box-glow"></div>
+                    <div class="box-icon">${icons[index % icons.length]}</div>
+                    <span class="box-text">${highlight}</span>
+                    <div class="box-pulse"></div>
+                `;
+                highlightsList.appendChild(box);
+            });
 
-        console.log('Displaying public invitation with saved data');
-        return;
+            console.log('✅ Loaded FRESH first department:', firstDeptId);
+            return;
+        }
     }
     
-    // ========================================================================
-    // PRIORITY 3: Use hardcoded default values (last resort)
-    // ========================================================================
-    
-    // Hide department section
+    // Fallback to hardcoded defaults (rest of the function stays the same)
     const deptSection = document.getElementById('deptSection');
     if (deptSection) deptSection.style.display = 'none';
     
-    // Set default event name
     document.getElementById('displayEventName').textContent = 'DOTTECH';
     document.getElementById('displayEventName').setAttribute('data-text', 'DOTTECH');
 
-    // Set default tagline
     const defaultTagline = 'INNOVATE • DOMINATE • ELEVATE';
     const taglineParts = defaultTagline.split('•').map(word => word.trim());
     const taglineHTML = taglineParts.map(word =>
@@ -1403,26 +1370,19 @@ async function displayDefaultInvitation() {
     ).join('<span class="subtitle-dot">•</span>');
     document.getElementById('displayTagline').innerHTML = taglineHTML;
 
-    // Set default event details
     document.getElementById('displayDate').textContent = 'MARCH 15-17, 2026';
     document.getElementById('displayTime').textContent = '09:00 - 18:00 HRS';
     document.getElementById('displayVenue').textContent = 'MAIN AUDITORIUM NEXUS';
     document.getElementById('displayMsg').textContent = PROFESSIONAL_INVITATION;
 
-    // Set default highlights
     const highlightsList = document.getElementById('highlightsList');
     highlightsList.innerHTML = '';
     const defaultHighlights = [
-        'HACK A MIN',
-        'UNLOCK VERSE',
-        'VIRTUAL STOCK MARKET',
-        'CODE EVOLUTION',
-        'QR TECH HUNT',
-        'LAN GAMING'
+        'HACK A MIN', 'UNLOCK VERSE', 'VIRTUAL STOCK MARKET',
+        'CODE EVOLUTION', 'QR TECH HUNT', 'LAN GAMING'
     ];
     const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
 
-    // Create highlight boxes
     defaultHighlights.forEach((highlight, index) => {
         const box = document.createElement('div');
         box.className = 'highlight-box';
@@ -1436,7 +1396,7 @@ async function displayDefaultInvitation() {
         highlightsList.appendChild(box);
     });
 
-    console.log('Displaying fallback public invitation');
+    console.log('⚠️ Using fallback defaults');
 }
 
 // ============================================================================
@@ -2235,5 +2195,6 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
 
 
