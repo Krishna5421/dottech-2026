@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOTTECH 2026 - INVITATION</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ========================================
+         BACKGROUND EFFECTS & ANIMATIONS
+         Cyberpunk-themed visual effects layer
+    ========================================= -->
+    
+    <!-- Grid pattern background for cyber aesthetic -->
+    <div class="cyber-grid"></div>
+    
+    <!-- Horizontal and vertical scanning lines -->
+    <div class="scan-line"></div>
+    <div class="scan-line-v"></div>
+    
+    <!-- Matrix-style falling text animation -->
+    <canvas id="matrix-rain"></canvas>
+    
+    <!-- Floating particle effects -->
+    <canvas id="particles"></canvas>
+
+    <!-- Holographic and glitch overlay effects -->
+    <div class="holo-overlay"></div>
+    <div class="glitch-overlay"></div>
+
+    <!-- ========================================
+         3D ROTATING HEXAGON DECORATIONS
+         Three hexagonal rings with staggered animations
+    ========================================= -->
+    <div class="hex-container">
+        <div class="hex-ring"></div>
+        <div class="hex-ring" style="animation-delay: -2s;"></div>
+        <div class="hex-ring" style="animation-delay: -4s;"></div>
+    </div>
+
+    <!-- ========================================
+         ADMIN PORTAL ACCESS
+         Password-protected admin interface trigger
+    ========================================= -->
+    <div class="admin-portal" id="adminPortal">
+        <div class="portal-btn" onclick="showAdminLogin()">
+            <span class="glitch" data-text="⚡ ADMIN">⚡ ADMIN</span>
+            <div class="btn-scan"></div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         ADMIN LOGIN MODAL
+         Authentication interface for admin access
+    ========================================= -->
+    <div class="admin-login-modal" id="adminLoginModal">
+        <div class="login-box">
+            <!-- Close button -->
+            <div class="login-close" onclick="closeAdminLogin()">×</div>
+            
+            <!-- Modal title with glitch effect -->
+            <h2 class="login-title glitch" data-text="ACCESS CONTROL">ACCESS CONTROL</h2>
+            
+            <!-- Retina scan animation -->
+            <div class="retina-scan">
+                <div class="scan-circle"></div>
+                <div class="scan-line-eye"></div>
+            </div>
+            
+            <!-- Password input field -->
+            <div class="input-group">
+                <label>ADMIN_PASSWORD:</label>
+                <input type="password" id="adminPassword" placeholder="ENTER PASSWORD">
+                <div class="input-glow"></div>
+            </div>
+            
+            <!-- Authentication button -->
+            <button class="cyber-btn" onclick="verifyAdmin()">
+                <span>AUTHENTICATE</span>
+                <div class="btn-particles"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         ADMIN PANEL
+         Main dashboard for managing invitations
+    ========================================= -->
+    <div class="admin-panel" id="adminPanel">
+        <!-- Close button -->
+        <div class="panel-close" onclick="closeAdmin()">×</div>
+        
+        <!-- Panel header -->
+        <h2 class="panel-title">
+            <span class="glitch" data-text="INVITATION MANAGER">INVITATION MANAGER</span>
+        </h2>
+
+        <!-- ========================================
+             DEPARTMENT SELECTOR
+             Dropdown to select/create departments
+        ========================================= -->
+        <div class="dept-selector">
+            <div class="input-group" style="flex: 1; margin-bottom: 0;">
+                <label>SELECT DEPARTMENT:</label>
+                <select id="deptSelector" onchange="loadDeptData()">
+                    <option value="">-- CREATE NEW --</option>
+                </select>
+                <div class="input-glow"></div>
+            </div>
+            <button class="small-btn" onclick="addNewDept()">+ NEW DEPT</button>
+        </div>
+
+        <!-- Public invitation editor button -->
+        <div class="input-group" style="margin-top: 20px; margin-bottom: 20px;">
+            <button class="cyber-btn" onclick="editPublicInvitation()" style="width: 100%;">
+                <span>🌐 EDIT PUBLIC INVITATION</span>
+                <div class="btn-particles"></div>
+            </button>
+        </div>
+
+        <!-- ========================================
+             FORM INPUTS - Department & Event Details
+             Input fields for creating/editing invitations
+        ========================================= -->
+        
+        <!-- Department ID (e.g., CSE, ECE) -->
+        <div class="input-group">
+            <label>DEPARTMENT_ID:</label>
+            <input type="text" id="deptId" placeholder="e.g., CSE, ECE, MECH">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Full department name -->
+        <div class="input-group">
+            <label>DEPARTMENT_NAME:</label>
+            <input type="text" id="deptName" placeholder="ENTER FULL NAME">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event name -->
+        <div class="input-group">
+            <label>EVENT_NAME:</label>
+            <input type="text" id="eventName" placeholder="ENTER EVENT NAME">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event tagline/subtitle -->
+        <div class="input-group">
+            <label>EVENT_TAGLINE:</label>
+            <input type="text" id="eventTagline" placeholder="ENTER TAGLINE">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event date range -->
+        <div class="input-group">
+            <label>DATE_CODE:</label>
+            <input type="text" id="eventDate" placeholder="MARCH 15-17, 2026">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event timing -->
+        <div class="input-group">
+            <label>TIME_SLOT:</label>
+            <input type="text" id="eventTime" placeholder="09:00 - 18:00 HRS">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event venue/location -->
+        <div class="input-group">
+            <label>LOCATION_VECTOR:</label>
+            <input type="text" id="eventVenue" placeholder="ENTER VENUE">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Invitation message body -->
+        <div class="input-group">
+            <label>MESSAGE_DATA:</label>
+            <textarea id="invitationMsg" rows="4" placeholder="ENTER INVITATION MESSAGE"></textarea>
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- Event highlights (comma-separated) -->
+        <div class="input-group">
+            <label>HIGHLIGHTS_ARRAY (comma separated):</label>
+            <input type="text" id="highlights" placeholder="Hackathon, Workshop, Tech Talk">
+            <div class="input-glow"></div>
+        </div>
+
+        <!-- ========================================
+             ACTION BUTTONS
+             Save, generate QR, and delete controls
+        ========================================= -->
+        <div class="button-group">
+            <!-- Save invitation data -->
+            <button class="cyber-btn" onclick="saveInvitation()">
+                <span>💾 SAVE DATA</span>
+                <div class="btn-particles"></div>
+            </button>
+            
+            <!-- Generate QR code -->
+            <button class="cyber-btn secondary" onclick="generateQR()">
+                <span>📱 GENERATE QR</span>
+                <div class="btn-particles"></div>
+            </button>
+            
+            <!-- Delete department -->
+            <button class="cyber-btn danger" onclick="deleteDept()">
+                <span>🗑️ DELETE</span>
+                <div class="btn-particles"></div>
+            </button>
+        </div>
+
+        <!-- ========================================
+             QR CODE DISPLAY AREA
+             Shows generated QR code with download option
+        ========================================= -->
+        <div class="qr-display" id="qrDisplay">
+            <h3>QR CODE GENERATED</h3>
+            <div id="qrContainer"></div>
+            <p class="qr-url" id="qrUrl"></p>
+            <button class="cyber-btn" onclick="downloadQR()">DOWNLOAD QR</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         LOADING SCREEN
+         Initial loading animation with progress bar
+    ========================================= -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <!-- Animated logo with rotating rings -->
+            <div class="loading-logo">
+                <div class="logo-ring"></div>
+                <div class="logo-ring" style="animation-delay: 0.5s;"></div>
+                <div class="logo-ring" style="animation-delay: 1s;"></div>
+                <div class="logo-core">⚡</div>
+            </div>
+            
+            <!-- Loading text with glitch effect -->
+            <h2 class="loading-text glitch" data-text="DECRYPTING">DECRYPTING</h2>
+            
+            <!-- Progress bar -->
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            
+            <!-- Status message -->
+            <p class="loading-status" id="loadingStatus">INITIALIZING NEURAL LINK...</p>
+        </div>
+    </div>
+
+    <!-- ========================================
+         MAIN INVITATION CONTENT
+         Hidden initially, revealed after loading
+    ========================================= -->
+    <div class="invitation-wrapper" id="invitationWrapper" style="display: none;">
+
+        <!-- ========================================
+             HERO SECTION
+             Landing page with event title and year
+        ========================================= -->
+        <section class="hero-section" id="heroSection">
+            <!-- Animated background shapes -->
+            <div class="hero-bg-shapes">
+                <div class="shape-1"></div>
+                <div class="shape-2"></div>
+                <div class="shape-3"></div>
+            </div>
+
+            <div class="hero-content">
+                <!-- Event title with glitch effect -->
+                <div class="glitch-wrapper">
+                    <h1 class="hero-title glitch" data-text="DOTTECH" id="displayEventName">DOTTECH</h1>
+                    <div class="title-particles"></div>
+                </div>
+
+                <!-- 3D animated year display (2026) -->
+                <div class="year-display">
+                    <div class="year-cube">
+                        <span class="year-face front">2</span>
+                        <span class="year-face back">2</span>
+                    </div>
+                    <div class="year-cube">
+                        <span class="year-face front">0</span>
+                        <span class="year-face back">0</span>
+                    </div>
+                    <div class="year-cube">
+                        <span class="year-face front">2</span>
+                        <span class="year-face back">2</span>
+                    </div>
+                    <div class="year-cube">
+                        <span class="year-face front">6</span>
+                        <span class="year-face back">6</span>
+                    </div>
+                </div>
+
+                <!-- Event tagline/subtitle -->
+                <p class="hero-subtitle" id="displayTagline">
+                    <span class="subtitle-word">INNOVATE</span>
+                    <span class="subtitle-dot">•</span>
+                    <span class="subtitle-word">DOMINATE</span>
+                    <span class="subtitle-dot">•</span>
+                    <span class="subtitle-word">ELEVATE</span>
+                </p>
+
+                <!-- Scroll/Swipe indicator -->
+                <div class="scroll-indicator">
+                    <!-- Desktop mouse scroll icon -->
+                    <div class="scroll-icon">
+                        <div class="scroll-wheel"></div>
+                    </div>
+
+                    <!-- Mobile swipe icon -->
+                    <div class="scroll-icon-mobile">
+                        <div class="swipe-hand">👆</div>
+                        <div class="swipe-lines">
+                            <div class="swipe-line"></div>
+                            <div class="swipe-line"></div>
+                            <div class="swipe-line"></div>
+                        </div>
+                    </div>
+
+                    <span class="scroll-text">SWIPE</span>
+                    <div class="scroll-arrow">↓</div>
+                </div>
+            </div>
+
+            <!-- Energy field effect -->
+            <div class="energy-field"></div>
+        </section>
+
+        <!-- ========================================
+             DEPARTMENT SECTION
+             Displays recipient department information
+        ========================================= -->
+        <section class="dept-section" id="deptSection">
+            <!-- 3D grid background -->
+            <div class="section-bg">
+                <div class="grid-3d"></div>
+            </div>
+
+            <div class="section-content">
+                <!-- Section header -->
+                <div class="data-header">
+                    <span class="data-label">// RECIPIENT_IDENTIFIED</span>
+                    <div class="header-line"></div>
+                </div>
+
+                <!-- Department frame with corner decorations -->
+                <div class="dept-container">
+                    <div class="dept-frame">
+                        <!-- Corner decorations -->
+                        <div class="frame-corner tl"></div>
+                        <div class="frame-corner tr"></div>
+                        <div class="frame-corner bl"></div>
+                        <div class="frame-corner br"></div>
+
+                        <!-- Department name -->
+                        <h2 class="dept-name" id="displayDept">
+                            <span class="dept-text">COMPUTER SCIENCE</span>
+                        </h2>
+
+                        <!-- Department ID badge -->
+                        <div class="dept-id-badge">
+                            <span class="badge-label">DEPT_ID:</span>
+                            <span class="badge-value" id="displayDeptId">CSE</span>
+                        </div>
+                    </div>
+
+                    <!-- Holographic line decorations -->
+                    <div class="holo-lines">
+                        <div class="holo-line"></div>
+                        <div class="holo-line"></div>
+                        <div class="holo-line"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+             MESSAGE SECTION
+             Terminal-style invitation message display
+        ========================================= -->
+        <section class="message-section" id="messageSection">
+            <!-- Floating 3D tech object decorations -->
+            <div class="floating-tech-objects">
+                <!-- CPU chip -->
+                <div class="tech-object cpu-chip">
+                    <div class="chip-core"></div>
+                    <div class="chip-pin"></div>
+                    <div class="chip-pin"></div>
+                    <div class="chip-pin"></div>
+                    <div class="chip-pin"></div>
+                </div>
+                
+                <!-- Holographic globe -->
+                <div class="tech-object hologram-globe">
+                    <div class="globe-ring"></div>
+                    <div class="globe-ring"></div>
+                    <div class="globe-ring"></div>
+                    <div class="globe-core">🌐</div>
+                </div>
+                
+                <!-- 3D data cube -->
+                <div class="tech-object data-cube">
+                    <div class="cube-face front"></div>
+                    <div class="cube-face back"></div>
+                    <div class="cube-face left"></div>
+                    <div class="cube-face right"></div>
+                    <div class="cube-face top"></div>
+                    <div class="cube-face bottom"></div>
+                </div>
+            </div>
+
+            <div class="section-content">
+                <!-- Terminal window interface -->
+                <div class="terminal-window">
+                    <!-- Terminal header with controls -->
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <span class="terminal-dot red"></span>
+                            <span class="terminal-dot yellow"></span>
+                            <span class="terminal-dot green"></span>
+                        </div>
+                        <span class="terminal-title">INVITATION_MESSAGE.TECH</span>
+                        <div class="terminal-status">
+                            <span class="status-indicator"></span>
+                            <span>ACTIVE</span>
+                        </div>
+                    </div>
+
+                    <!-- Terminal body with message -->
+                    <div class="terminal-body">
+                        <!-- Command prompt -->
+                        <p class="terminal-prompt">
+                            <span class="prompt-icon">➜</span>
+                            <span class="prompt-path">~/Dottech/invitation</span>
+                            <span class="prompt-symbol">$</span>
+                            <span class="prompt-cmd">.tech message.txt</span>
+                        </p>
+                        
+                        <!-- Message output -->
+                        <div class="message-output">
+                            <p class="message-text" id="displayMsg">
+                                You are cordially invited to participate in the most groundbreaking technological
+                                symposium of the decade. Prepare to witness the convergence of human ingenuity and
+                                artificial intelligence in an unprecedented celebration of innovation.
+                            </p>
+                        </div>
+                        
+                        <!-- Blinking cursor -->
+                        <div class="terminal-cursor"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+             DETAILS SECTION
+             Event date, time, and venue information
+        ========================================= -->
+        <section class="details-section" id="detailsSection">
+            <!-- Animated robot decoration -->
+            <div class="floating-robot">
+                <!-- Robot head -->
+                <div class="robot-head">
+                    <div class="robot-antenna"></div>
+                    <div class="robot-eye left"></div>
+                    <div class="robot-eye right"></div>
+                    <div class="robot-mouth"></div>
+                </div>
+                
+                <!-- Robot body -->
+                <div class="robot-body">
+                    <div class="robot-circuit"></div>
+                    <div class="robot-core"></div>
+                </div>
+                
+                <!-- Robot arms -->
+                <div class="robot-arm left"></div>
+                <div class="robot-arm right"></div>
+            </div>
+
+            <div class="section-content">
+                <!-- Information cards grid -->
+                <div class="details-grid">
+                    <!-- Date card -->
+                    <div class="detail-card">
+                        <div class="card-hologram"></div>
+                        <div class="card-glow"></div>
+                        <div class="card-icon">📅</div>
+                        <div class="card-label">DATE_PROTOCOL</div>
+                        <div class="card-value" id="displayDate">JANUARY 30-31, 2026</div>
+                        <div class="card-data-stream"></div>
+                    </div>
+
+                    <!-- Time card -->
+                    <div class="detail-card">
+                        <div class="card-hologram"></div>
+                        <div class="card-glow"></div>
+                        <div class="card-icon">⏰</div>
+                        <div class="card-label">TIME_SYNC</div>
+                        <div class="card-value" id="displayTime">07:00 AM - 6:00 PM</div>
+                        <div class="card-data-stream"></div>
+                    </div>
+
+                    <!-- Venue card -->
+                    <div class="detail-card">
+                        <div class="card-hologram"></div>
+                        <div class="card-glow"></div>
+                        <div class="card-icon">📍</div>
+                        <div class="card-label">LOCATION_COORDS</div>
+                        <div class="card-value" id="displayVenue">NEW BUILDING</div>
+                        <div class="card-data-stream"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+             HIGHLIGHTS SECTION
+             Displays event activities and competitions
+        ========================================= -->
+        <section class="highlights-section" id="highlightsSection">
+            <!-- Animated drone decoration -->
+            <div class="flying-drone">
+                <!-- Drone body -->
+                <div class="drone-body">
+                    <div class="drone-camera"></div>
+                    <div class="drone-light"></div>
+                </div>
+                
+                <!-- Propellers (top-left, top-right, bottom-left, bottom-right) -->
+                <div class="drone-propeller tl"></div>
+                <div class="drone-propeller tr"></div>
+                <div class="drone-propeller bl"></div>
+                <div class="drone-propeller br"></div>
+                
+                <!-- Drone trail effect -->
+                <div class="drone-trail"></div>
+            </div>
+
+            <div class="section-content">
+                <!-- Section title -->
+                <h3 class="section-title">
+                    <span class="glitch" data-text="TECH ARENAS • EVENTS">TECH ARENAS • EVENTS</span>
+                    <div class="title-underline"></div>
+                </h3>
+
+                <!-- Event highlights grid -->
+                <div class="highlights-container" id="highlightsList">
+                    <!-- Hack A Min -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">🧠</div>
+                        <span class="box-text">HACK A MIN</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                    
+                    <!-- Unlock Verse -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">🔓</div>
+                        <span class="box-text">UNLOCK VERSE</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                    
+                    <!-- Virtual Stock Market -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">📈</div>
+                        <span class="box-text">VIRTUAL STOCK MARKET</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                    
+                    <!-- Code Evolution -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">⚡</div>
+                        <span class="box-text">CODE EVOLUTION</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                    
+                    <!-- QR Tech Hunt -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">🔍</div>
+                        <span class="box-text">QR TECH HUNT</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                    
+                    <!-- LAN Gaming -->
+                    <div class="highlight-box">
+                        <div class="box-border"></div>
+                        <div class="box-glow"></div>
+                        <div class="box-icon">🎮</div>
+                        <span class="box-text">LAN GAMING</span>
+                        <div class="box-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================
+             FOOTER SECTION
+             Closing message and branding
+        ========================================= -->
+        <section class="footer-section" id="footerSection">
+            <!-- Animated wave background -->
+            <div class="footer-waves"></div>
+
+            <!-- 3D grid background -->
+            <div class="footer-grid"></div>
+
+            <div class="section-content">
+                <!-- Main closing message -->
+                <div class="footer-text">
+                    <div class="footer-highlight">
+                        YOUR PRESENCE WILL SHAPE THE FUTURE
+                    </div>
+                    <div class="footer-normal">
+                        JOIN US AT THE INNOVATION FRONTIER
+                    </div>
+                </div>
+
+                <!-- Binary data blocks decoration -->
+                <div class="footer-binary">
+                    <div class="binary-block">DOTTECH</div>
+                </div>
+
+                <!-- Signature line -->
+                <div class="footer-signature">
+                    <div class="signature-line"></div>
+                    <span>DOTTECH_PROTOCOL_2026</span>
+                    <div class="signature-line"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========================================
+     EXTERNAL LIBRARIES
+     QR Code generation library
+========================================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+  // This will be replaced by Vercel with actual values
+  window.FIREBASE_CONFIG = {
+    apiKey: "VITE_FIREBASE_API_KEY",
+    authDomain: "VITE_FIREBASE_AUTH_DOMAIN",
+    databaseURL: "VITE_FIREBASE_DATABASE_URL",
+    projectId: "VITE_FIREBASE_PROJECT_ID",
+    storageBucket: "VITE_FIREBASE_STORAGE_BUCKET",
+    messagingSenderId: "VITE_FIREBASE_MESSAGING_SENDER_ID",
+    appId: "VITE_FIREBASE_APP_ID"
+  };
+</script>
+
+<!-- ========================================
+     FIREBASE REALTIME DATABASE
+     Cloud storage for cross-device sync
+========================================= -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<!-- ========================================
+     MAIN JAVASCRIPT
+     All interaction and animation logic
+========================================= -->
+<script src="script.js"></script>
+
+</body>
+</html>
+
