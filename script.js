@@ -524,13 +524,11 @@ function addNewDept() {
  * Handles both PUBLIC invitations and department-specific invitations
  * Includes comprehensive validation and error handling
  */
+// Replace the saveInvitation function with this updated version:
+
 async function saveInvitation() {
     const btn = event.target;
     const originalText = btn.innerHTML;
-    
-    // ========================================================================
-    // GET AND VALIDATE INPUT VALUES
-    // ========================================================================
     
     const deptId = document.getElementById('deptId').value.trim().toUpperCase();
     const deptName = document.getElementById('deptName').value.trim();
@@ -542,53 +540,36 @@ async function saveInvitation() {
     const message = document.getElementById('invitationMsg').value.trim();
     const highlightsInput = document.getElementById('highlights').value.trim();
 
-    // ========================================================================
-    // VALIDATION - Check all required fields
-    // ========================================================================
-    
-    // Validate Department ID is present
+    // Validation
     if (!deptId) {
-        alert('⚠️ DEPARTMENT ID IS REQUIRED\n\nPlease enter a unique identifier (e.g., BSCCSIT, BMS, BBA)');
+        alert('⚠️ DEPARTMENT ID IS REQUIRED');
         return;
     }
 
-    // Check for invalid characters in Department ID (alphanumeric only)
     if (!/^[A-Z0-9]+$/.test(deptId)) {
-        alert('⚠️ INVALID DEPARTMENT ID\n\nDepartment ID can only contain:\n• Letters (A-Z)\n• Numbers (0-9)\n• No spaces or special characters\n\nExample: BSCCSIT, BMS, BBA');
+        alert('⚠️ INVALID DEPARTMENT ID\n\nOnly letters and numbers allowed.');
         return;
     }
 
-    // Check Department ID length limit
     if (deptId.length > 20) {
-        alert('⚠️ DEPARTMENT ID TOO LONG\n\nMaximum 20 characters allowed.\nCurrent length: ' + deptId.length);
+        alert('⚠️ DEPARTMENT ID TOO LONG (max 20 chars)');
         return;
     }
 
-    // Check if Department Name is required (except for PUBLIC)
     if (deptId !== 'PUBLIC' && !deptName) {
-        alert('⚠️ DEPARTMENT NAME IS REQUIRED\n\nPlease enter the full department name\n(e.g., BSc Computer Science & IT)');
+        alert('⚠️ DEPARTMENT NAME IS REQUIRED');
         return;
     }
 
-    // Parse highlights array from comma-separated string
     const highlights = highlightsInput.split(',').map(h => h.trim()).filter(h => h);
 
-    // ========================================================================
-    // SHOW LOADING STATE
-    // ========================================================================
-    
     btn.innerHTML = '<span>⏳ SAVING DATA...</span>';
     btn.disabled = true;
     btn.style.opacity = '0.7';
     btn.style.cursor = 'not-allowed';
 
     try {
-        // ====================================================================
-        // HANDLE PUBLIC INVITATION
-        // ====================================================================
-        
         if (deptId === 'PUBLIC') {
-            // Build public invitation data object
             const publicData = {
                 eventName: eventName || 'DOTTECH',
                 tagline: tagline || 'INNOVATE • DOMINATE • ELEVATE',
@@ -597,56 +578,44 @@ async function saveInvitation() {
                 venue: venue || 'MAIN AUDITORIUM NEXUS',
                 message: message || PROFESSIONAL_INVITATION,
                 highlights: highlights.length ? highlights : [
-                    'HACK A MIN', 
-                    'UNLOCK VERSE', 
-                    'VIRTUAL STOCK MARKET', 
-                    'CODE EVOLUTION', 
-                    'QR TECH HUNT', 
-                    'LAN GAMING'
+                    'HACK A MIN', 'UNLOCK VERSE', 'VIRTUAL STOCK MARKET', 
+                    'CODE EVOLUTION', 'QR TECH HUNT', 'LAN GAMING'
                 ]
             };
 
-            // Save to in-memory cache
             departments['PUBLIC'] = publicData;
-            
-            // Save to persistent storage
             const saveSuccess = await UniversalStorage.set('dept:PUBLIC', publicData, true);
             
             if (!saveSuccess) {
                 throw new Error('Failed to save PUBLIC invitation to storage');
             }
 
-            // Show success message
-            btn.innerHTML = '<span>✓ PUBLIC INVITATION SAVED</span><div class="btn-particles"></div>';
+            btn.innerHTML = '<span>✓ PUBLIC INVITATION SAVED</span>';
             btn.style.background = 'linear-gradient(135deg, #00ff9d, #00f3ff)';
             btn.style.opacity = '1';
 
-            // Reset button after delay
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.style.background = '';
                 btn.style.cursor = 'pointer';
                 btn.disabled = false;
-                
-                // Re-enable locked fields
                 document.getElementById('deptId').disabled = false;
                 document.getElementById('deptName').disabled = false;
             }, 2500);
 
-            // **FIX: Update display immediately if viewing public page**
+            // **FIX: Force immediate reload of public page**
             const currentDeptId = getDeptIdFromURL();
             if (!currentDeptId) {
-                displayDefaultInvitation();
+                // Reload PUBLIC data immediately
+                const freshPublicData = await UniversalStorage.get('dept:PUBLIC', true);
+                if (freshPublicData) {
+                    displayInvitation(freshPublicData, 'PUBLIC');
+                }
             }
 
-            console.log('✅ Public invitation saved successfully:', publicData);
+            console.log('✅ Public invitation saved and reloaded');
             
-        } 
-        // ====================================================================
-        // HANDLE DEPARTMENT-SPECIFIC INVITATION
-        // ====================================================================
-        else {
-            // Build department data object
+        } else {
             const deptData = {
                 name: deptName,
                 eventName: eventName || 'DOTTECH',
@@ -656,31 +625,22 @@ async function saveInvitation() {
                 venue: venue || 'MAIN AUDITORIUM NEXUS',
                 message: message || PROFESSIONAL_INVITATION,
                 highlights: highlights.length ? highlights : [
-                    'HACK A MIN', 
-                    'UNLOCK VERSE', 
-                    'VIRTUAL STOCK MARKET', 
-                    'CODE EVOLUTION', 
-                    'QR TECH HUNT', 
-                    'LAN GAMING'
+                    'HACK A MIN', 'UNLOCK VERSE', 'VIRTUAL STOCK MARKET', 
+                    'CODE EVOLUTION', 'QR TECH HUNT', 'LAN GAMING'
                 ]
             };
 
-            // Save to in-memory cache
             departments[deptId] = deptData;
-            
-            // Save to persistent storage
             const saveSuccess = await UniversalStorage.set(`dept:${deptId}`, deptData, true);
             
             if (!saveSuccess) {
                 throw new Error('Failed to save department to storage');
             }
 
-            // Show success message
-            btn.innerHTML = '<span>✓ SAVED SUCCESSFULLY</span><div class="btn-particles"></div>';
+            btn.innerHTML = '<span>✓ SAVED SUCCESSFULLY</span>';
             btn.style.background = 'linear-gradient(135deg, #00ff9d, #00f3ff)';
             btn.style.opacity = '1';
 
-            // Reset button after delay
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.style.background = '';
@@ -688,34 +648,32 @@ async function saveInvitation() {
                 btn.disabled = false;
             }, 2500);
 
-            // **FIX: Reload department list in dropdown**
+            // **FIX: Reload dropdown and force display update**
             await loadAllDepartments();
-
-            // **FIX: Force update display immediately**
+            
+            // Force immediate reload from storage to ensure fresh data
+            const freshDeptData = await UniversalStorage.get(`dept:${deptId}`, true);
+            
             const currentDeptId = getDeptIdFromURL();
-            if (currentDeptId === deptId) {
-                // If viewing this department, update immediately
-                displayInvitation(deptData, deptId);
-            } else if (!currentDeptId) {
-                // If on public page, reload default
-                displayDefaultInvitation();
+            if (currentDeptId === deptId && freshDeptData) {
+                // Viewing this department - update immediately with fresh data
+                displayInvitation(freshDeptData, deptId);
+            } else if (!currentDeptId && freshDeptData) {
+                // On public page - also update if this is the displayed dept
+                displayInvitation(freshDeptData, deptId);
             }
 
-            console.log('✅ Department saved and displayed:', deptId, deptData);
+            console.log('✅ Department saved and display updated:', deptId);
         }
 
     } catch (error) {
-        // ====================================================================
-        // ERROR HANDLING
-        // ====================================================================
-        
         console.error('❌ Save error:', error);
         
         btn.innerHTML = '<span>❌ SAVE FAILED</span>';
         btn.style.background = 'linear-gradient(135deg, #ff0055, #ff6b00)';
         btn.style.opacity = '1';
         
-        alert('❌ FAILED TO SAVE DATA\n\nError: ' + error.message + '\n\nPlease try again or check your internet connection.');
+        alert('❌ FAILED TO SAVE DATA\n\nError: ' + error.message);
         
         setTimeout(() => {
             btn.innerHTML = originalText;
@@ -726,7 +684,6 @@ async function saveInvitation() {
         }, 3000);
     }
 }
-
 /**
  * Delete selected department from storage
  * Includes multiple confirmation steps and prevents accidental deletion
@@ -2278,4 +2235,5 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
 
