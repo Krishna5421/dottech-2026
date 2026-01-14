@@ -23,14 +23,14 @@ if (navigator.hardwareConcurrency <= 4 || window.innerWidth <= 768) {
 // Replace with YOUR config from Firebase Console (Step 3)
 // ============================================================================
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID
+const firebaseConfig = window.FIREBASE_CONFIG || {
+  apiKey: "PLACEHOLDER_API_KEY",
+  authDomain: "PLACEHOLDER.firebaseapp.com",
+  databaseURL: "https://PLACEHOLDER-default-rtdb.firebaseio.com",
+  projectId: "PLACEHOLDER",
+  storageBucket: "PLACEHOLDER.appspot.com",
+  messagingSenderId: "PLACEHOLDER",
+  appId: "PLACEHOLDER"
 };
 
 // Initialize Firebase
@@ -2166,6 +2166,7 @@ if (window.innerWidth <= 768) {
         return null;
     };
 }
+
 
 
 
