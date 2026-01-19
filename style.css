@@ -2853,7 +2853,7 @@ textarea:focus {
     .hero-title.glitch::before,
     .hero-title.glitch::after {
         display: block !important;
-        animation-duration: 8s !important;
+        animation-duration: 4s !important;
         opacity: 0.4 !important;
     }
     
@@ -2861,7 +2861,7 @@ textarea:focus {
     .section-title .glitch::before,
     .section-title .glitch::after {
         display: block !important;
-        animation-duration: 6s !important;
+        animation-duration: 4s !important;
         opacity: 0.35 !important;
     }
     
