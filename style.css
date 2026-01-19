@@ -844,7 +844,7 @@ body {
 
 .hero-title {
     font-family: 'Audiowide', 'Orbitron', sans-serif;
-    font-size: clamp(56px, 12vw, 180px);
+    font-size: clamp(65px, 12vw, 180px);
     font-weight: 900;
     letter-spacing: clamp(5px, 2vw, 25px);
     text-shadow: 
