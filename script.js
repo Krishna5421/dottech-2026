@@ -1122,58 +1122,108 @@ async function showInvitation() {
 
     let progress = 0;
     let statusIndex = 0;
+    let dataLoaded = false;
+    let invitationData = null;
 
+    // ========================================================================
+    // PARALLEL LOADING: Fetch data WHILE showing animation (non-blocking)
+    // ========================================================================
+    
+    const loadData = async () => {
+        try {
+            if (deptId) {
+                // Load department-specific data
+                const freshDeptData = await UniversalStorage.get(`dept:${deptId}`, true);
+                
+                if (freshDeptData) {
+                    departments[deptId] = freshDeptData;
+                    invitationData = { type: 'dept', data: freshDeptData, id: deptId };
+                    console.log('✅ Loaded FRESH data for:', deptId);
+                } else {
+                    console.warn('⚠️ Department not found:', deptId);
+                    invitationData = { type: 'default' };
+                }
+            } else {
+                // Load PUBLIC invitation
+                invitationData = { type: 'public' };
+            }
+            dataLoaded = true;
+        } catch (error) {
+            console.error('❌ Data loading error:', error);
+            invitationData = { type: 'default' };
+            dataLoaded = true;
+        }
+    };
+
+    // Start loading data in parallel (don't wait for it)
+    loadData();
+
+    // ========================================================================
+    // FAST LOADING ANIMATION (Completes in ~2 seconds max)
+    // ========================================================================
+    
     const loadingInterval = setInterval(() => {
-        progress += Math.random() * 20;
+        // Faster progress increment
+        progress += Math.random() * 25 + 10; // 10-35% per tick (faster)
+        
         if (progress > 100) progress = 100;
 
         loadingProgress.style.width = progress + '%';
 
-        if (statusIndex < statuses.length) {
+        // Update status messages
+        if (statusIndex < statuses.length && progress > (statusIndex * 16)) {
             loadingStatus.textContent = statuses[statusIndex];
             statusIndex++;
         }
 
-        if (progress >= 100) {
+        // ====================================================================
+        // Complete loading when EITHER:
+        // 1. Progress reaches 100% OR
+        // 2. Data is loaded (whichever comes first)
+        // ====================================================================
+        
+        if (progress >= 100 || (dataLoaded && progress > 60)) {
             clearInterval(loadingInterval);
+            
+            // Force to 100% if data loaded early
+            loadingProgress.style.width = '100%';
+            loadingStatus.textContent = 'LOADING COMPLETE...';
 
             setTimeout(async () => {
                 loadingScreen.classList.add('hidden');
                 invitationWrapper.style.display = 'block';
 
                 setTimeout(async () => {
-                    // **FIX: ALWAYS RELOAD FRESH DATA FROM STORAGE**
-                    if (deptId) {
-                        // Load department-specific data FRESH from storage
-                        const freshDeptData = await UniversalStorage.get(`dept:${deptId}`, true);
-                        
-                        if (freshDeptData) {
-                            // Update in-memory cache
-                            departments[deptId] = freshDeptData;
-                            // Display fresh data
-                            displayInvitation(freshDeptData, deptId);
-                            console.log('✅ Loaded FRESH data for:', deptId, freshDeptData);
+                    // Wait for data if not loaded yet (rare case)
+                    let waitCount = 0;
+                    while (!dataLoaded && waitCount < 20) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        waitCount++;
+                    }
+
+                    // Display the invitation
+                    if (invitationData) {
+                        if (invitationData.type === 'dept') {
+                            displayInvitation(invitationData.data, invitationData.id);
+                        } else if (invitationData.type === 'public') {
+                            await displayDefaultInvitation();
                         } else {
-                            console.warn('⚠️ Department not found:', deptId);
-                            displayDefaultInvitation();
+                            await displayDefaultInvitation();
                         }
                     } else {
-                        // Load PUBLIC invitation FRESH from storage
                         await displayDefaultInvitation();
                     }
                 }, 100);
-            }, 500);
+            }, 300);
         }
-    }, 200);
+    }, 150); // Faster interval: 150ms instead of 200ms
 }
 
-/**
- * Display department-specific invitation content
- * Populates all sections with department data
- * @param {Object} dept - Department data object
- * @param {string} deptId - Department ID
- */
 function displayInvitation(dept, deptId) {
+    // Hide department section for department-specific invitations
+    const deptSection = document.getElementById('deptSection');
+    if (deptSection) deptSection.style.display = 'none';
+    
     // ========================================================================
     // UPDATE EVENT NAME (Hero Section)
     // ========================================================================
@@ -1211,7 +1261,12 @@ function displayInvitation(dept, deptId) {
     // ========================================================================
     
     const displayMessage = dept.message || PROFESSIONAL_INVITATION;
-    document.getElementById('displayMsg').textContent = displayMessage;
+
+// Add department name at the beginning with special formatting
+const departmentPrefix = `<span class="dept-highlight">${dept.name}</span>\n\n`;
+const fullMessage = departmentPrefix + displayMessage;
+
+document.getElementById('displayMsg').innerHTML = fullMessage;
 
     // ========================================================================
     // UPDATE HIGHLIGHTS (Highlights Section) - WITH DESCRIPTIONS

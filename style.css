@@ -74,53 +74,6 @@ body {
     opacity: 0.12;
 }
 
-.scan-line {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        var(--neon-cyan) 10%, 
-        var(--neon-pink) 50%, 
-        var(--neon-cyan) 90%, 
-        transparent);
-    animation: scan 6s linear infinite;
-    z-index: 999;
-    pointer-events: none;
-    box-shadow: 0 0 40px var(--neon-cyan), 0 0 80px var(--neon-pink);
-    filter: none; 
-}
-
-.scan-line-v {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, 
-        transparent, 
-        var(--neon-green) 10%, 
-        var(--neon-purple) 50%, 
-        var(--neon-green) 90%, 
-        transparent);
-    animation: scanV 8s linear infinite;
-    z-index: 999;
-    pointer-events: none;
-    box-shadow: 0 0 40px var(--neon-green);
-}
-
-@keyframes scan {
-    0% { transform: translateY(-10vh); }
-    100% { transform: translateY(110vh); }
-}
-
-@keyframes scanV {
-    0% { transform: translateX(-10vw); }
-    100% { transform: translateX(110vw); }
-}
-
 #particles {
     position: fixed;
     top: 0;
@@ -1434,7 +1387,7 @@ body {
 .terminal-window {
     max-width: 900px;
     width: 100%;
-    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(15, 20, 50, 0.9));
+    background: linear-gradient(135deg, rgba(5, 8, 20, 0.97), rgba(8, 12, 28, 0.96));
     border: 3px solid var(--neon-cyan);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%);
     box-shadow: 
@@ -1645,7 +1598,7 @@ body {
     font-family: 'Share Tech Mono', monospace;
     position: relative;
     z-index: 10;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(5, 8, 22, 0.5));
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(5, 8, 22, 0.75));
     backdrop-filter: none;
 }
 
@@ -1754,18 +1707,19 @@ body {
     line-height: 1.9;
     font-size: clamp(15px, 3.5vw, 18px);
     text-shadow: 
-        0 0 15px rgba(0, 243, 255, 0.9),
-        0 0 30px rgba(0, 243, 255, 0.5);
+        0 0 5px rgba(0, 243, 255, 0.4),
+        0 0 10px rgba(0, 243, 255, 0.2);
     position: relative;
     font-weight: 400;
+    white-space: pre-wrap;
 }
 
 /* Hover feedback - Subtle brightness increase */
 .terminal-window:hover .message-text,
 .terminal-window:active .message-text {
     text-shadow: 
-        0 0 20px rgba(0, 243, 255, 1),
-        0 0 40px rgba(0, 243, 255, 0.6);
+        0 0 8px rgba(0, 243, 255, 0.5), 
+        0 0 15px rgba(0, 243, 255, 0.3); 
 }
 
 .terminal-cursor {
@@ -2648,7 +2602,7 @@ textarea:focus {
 }
 
 /* ============================================================================
-   MOBILE OPTIMIZATION - ZERO LAG + SUBTLE ANIMATIONS
+   MOBILE OPTIMIZATION - ULTRA SMOOTH (WORKS ON LOW-END DEVICES)
    ============================================================================ */
 @media (max-width: 768px) {
     /* Hide ALL heavy animated elements */
@@ -2789,6 +2743,73 @@ textarea:focus {
         
         background-size: 600px 600px;
         background-position: 50% 50%;
+    }
+    
+    /* ========================================================================
+       INSTANT BOX EXPANSION (ZERO LAG - LOW-END DEVICE OPTIMIZED)
+       ======================================================================== */
+    
+    /* Remove ALL transitions for instant response */
+    .highlight-box,
+    .highlight-box * {
+        transition: none !important;
+        animation: none !important;
+        will-change: auto !important;
+    }
+    
+    /* Hardware acceleration for smooth rendering */
+    .highlight-box {
+        transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -webkit-font-smoothing: antialiased;
+        contain: layout style paint; /* CSS containment for better performance */
+    }
+    
+    /* Description hidden by default - INSTANT */
+    .box-description {
+        display: none; /* Use display instead of max-height for instant toggle */
+        opacity: 1 !important;
+        margin-top: 0;
+        padding: 0;
+    }
+    
+    /* Expanded state - INSTANT show */
+    .highlight-box.expanded .box-description {
+        display: block !important; /* Instant show - no animation */
+        margin-top: clamp(15px, 3vh, 20px);
+        padding: clamp(15px, 3vw, 20px);
+        border-top: 2px solid rgba(0, 243, 255, 0.3);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(14px, 3vw, 16px);
+        color: var(--neon-green);
+        line-height: 1.8;
+        text-align: left;
+    }
+    
+    /* Only arrow has smooth rotation (lightweight) */
+    .expand-indicator {
+        transition: transform 0.2s ease !important;
+        will-change: transform;
+    }
+    
+    .highlight-box.expanded .expand-indicator {
+        transform: rotate(180deg);
+    }
+    
+    /* ========================================================================
+       REMOVE HEAVY SHADOWS AND EFFECTS
+       ======================================================================== */
+    
+    .highlight-box {
+        box-shadow: none !important; /* Remove heavy box shadows */
+        border: 2px solid var(--neon-cyan) !important; /* Simpler border */
+    }
+    
+    .highlight-box:active {
+        opacity: 0.9; /* Simple feedback */
+        box-shadow: none !important;
     }
     
     /* ========================================================================
@@ -3172,8 +3193,7 @@ textarea:focus {
     
     /* Touch feedback */
     .cyber-btn:active,
-    .detail-card:active,
-    .highlight-box:active {
+    .detail-card:active {
         transform: scale(0.98) !important;
         transition: transform 0.08s !important;
     }
@@ -3204,12 +3224,30 @@ textarea:focus {
     
     /* Force hardware acceleration only where needed */
     .terminal-window,
+    .detail-card {
+        transform: translateZ(0) !important;
+        backface-visibility: hidden !important;
+    }
+    
+    /* ========================================================================
+       FORCE GPU ACCELERATION FOR SMOOTH SCROLLING
+       ======================================================================== */
+    
+    body {
+        -webkit-overflow-scrolling: touch; /* Keep this for older iOS */
+    }
+    
+    /* Force hardware acceleration */
+    .highlight-box,
     .detail-card,
-    .highlight-box {
+    .terminal-window {
         transform: translateZ(0) !important;
         backface-visibility: hidden !important;
     }
 }
+/* ============================================================================
+   END OF MOBILE OPTIMIZATION
+   ============================================================================ */
 /* ============================================================================
    END OF MOBILE OPTIMIZATION
    ============================================================================ */
@@ -3291,6 +3329,16 @@ textarea:focus {
         height: auto;
         min-height: auto;
     }
+}
+
+/* Highlighted Department Name in Message */
+.dept-highlight {
+    color: var(--neon-pink);
+    font-weight: 700;
+    font-size: 1.1em;
+    text-shadow: 0 0 10px var(--neon-pink);
+    display: block;
+    margin-bottom: 10px;
 }
 
 /* ============================================================================
