@@ -1183,7 +1183,6 @@ function displayInvitation(dept, deptId) {
 
     // ========================================================================
     // UPDATE TAGLINE (Hero Section)
-    // Split tagline by bullet points and wrap each word in span
     // ========================================================================
     
     const taglineParts = dept.tagline.split('•').map(word => word.trim());
@@ -1201,7 +1200,6 @@ function displayInvitation(dept, deptId) {
 
     // ========================================================================
     // UPDATE EVENT DETAILS (Details Section)
-    // Date, time, and venue information
     // ========================================================================
     
     document.getElementById('displayDate').textContent = dept.date;
@@ -1210,38 +1208,52 @@ function displayInvitation(dept, deptId) {
 
     // ========================================================================
     // UPDATE MESSAGE (Message Section)
-    // Use department message or fallback to default
     // ========================================================================
     
     const displayMessage = dept.message || PROFESSIONAL_INVITATION;
     document.getElementById('displayMsg').textContent = displayMessage;
 
     // ========================================================================
-    // UPDATE HIGHLIGHTS (Highlights Section)
-    // Create highlight boxes with icons
+    // UPDATE HIGHLIGHTS (Highlights Section) - WITH DESCRIPTIONS
     // ========================================================================
-    
+
     const highlightsList = document.getElementById('highlightsList');
     highlightsList.innerHTML = '';
-    
-    // Icon pool for highlights
-    const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮','💻',];
 
-    // Create a highlight box for each event
+    const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮', '💻'];
+
+    const descriptions = {
+        'HACK_A_MIN': 'A 60-minute rapid prototyping challenge where teams race against time to develop innovative solutions. Test your coding speed, creativity, and problem-solving skills in this intense hackathon format.',
+        'UNLOCK_VERSE': 'An immersive escape room experience in virtual reality. Navigate through cryptographic puzzles, decode algorithms, and unlock digital mysteries using your technical knowledge and teamwork.',
+        'VIRTUAL_STOCK_MARKET': 'Experience real-time market simulation with virtual currency. Learn trading strategies, analyze market trends, and compete to build the most profitable portfolio in this engaging financial tech challenge.',
+        'CODE_EVOLUTION': 'A progressive coding competition where problems evolve in complexity. Start with basics and advance through increasingly challenging algorithmic puzzles that test your problem-solving evolution.',
+        'QR_TECH_HUNT': 'A technology-driven treasure hunt using QR codes scattered across campus. Solve riddles, complete technical challenges, and scan codes to progress through this interactive adventure.',
+        'LAN_GAMING': 'High-octane multiplayer gaming tournaments featuring popular esports titles. Form teams, strategize, and compete for glory in fast-paced competitive gaming action.'
+    };
+
     dept.highlights.forEach((highlight, index) => {
+        const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+        const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+        
         const box = document.createElement('div');
         box.className = 'highlight-box';
+        
+        // ✅ USE EVENT LISTENER INSTEAD OF ONCLICK ATTRIBUTE
+        box.addEventListener('click', function() {
+            window.toggleEventDescription(this);
+        });
+        
         box.innerHTML = `
             <div class="box-border"></div>
             <div class="box-glow"></div>
             <div class="box-icon">${icons[index % icons.length]}</div>
-            <span class="box-text">${highlight.toUpperCase().replace(/ /g, '_')}</span>
+            <span class="box-text">${normalizedName}</span>
+            <div class="box-description">${description}</div>
+            <div class="expand-indicator">▼</div>
             <div class="box-pulse"></div>
         `;
         highlightsList.appendChild(box);
     });
-
-    console.log('Displaying invitation for:', deptId);
 }
 
 /**
@@ -1250,11 +1262,22 @@ function displayInvitation(dept, deptId) {
  * or uses hardcoded defaults as last resort
  */
 async function displayDefaultInvitation() {
-    // **FIX: RELOAD PUBLIC DATA FRESH FROM STORAGE**
+    // Event descriptions object (used in all three scenarios)
+    const descriptions = {
+        'HACK_A_MIN': 'A 60-minute rapid prototyping challenge where teams race against time to develop innovative solutions. Test your coding speed, creativity, and problem-solving skills in this intense hackathon format.',
+        'UNLOCK_VERSE': 'An immersive escape room experience in virtual reality. Navigate through cryptographic puzzles, decode algorithms, and unlock digital mysteries using your technical knowledge and teamwork.',
+        'VIRTUAL_STOCK_MARKET': 'Experience real-time market simulation with virtual currency. Learn trading strategies, analyze market trends, and compete to build the most profitable portfolio in this engaging financial tech challenge.',
+        'CODE_EVOLUTION': 'A progressive coding competition where problems evolve in complexity. Start with basics and advance through increasingly challenging algorithmic puzzles that test your problem-solving evolution.',
+        'QR_TECH_HUNT': 'A technology-driven treasure hunt using QR codes scattered across campus. Solve riddles, complete technical challenges, and scan codes to progress through this interactive adventure.',
+        'LAN_GAMING': 'High-octane multiplayer gaming tournaments featuring popular esports titles. Form teams, strategize, and compete for glory in fast-paced competitive gaming action.'
+    };
+
+    // ========================================================================
+    // SCENARIO 1: Load PUBLIC invitation
+    // ========================================================================
     const publicData = await UniversalStorage.get('dept:PUBLIC', true);
     
     if (publicData) {
-        // Update in-memory cache
         departments['PUBLIC'] = publicData;
         
         const deptSection = document.getElementById('deptSection');
@@ -1278,14 +1301,25 @@ async function displayDefaultInvitation() {
         highlightsList.innerHTML = '';
         const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
 
+        // ✅ FIXED: Add descriptions and click handlers
         publicData.highlights.forEach((highlight, index) => {
+            const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+            const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+            
             const box = document.createElement('div');
             box.className = 'highlight-box';
+            
+            box.addEventListener('click', function() {
+                window.toggleEventDescription(this);
+            });
+            
             box.innerHTML = `
                 <div class="box-border"></div>
                 <div class="box-glow"></div>
                 <div class="box-icon">${icons[index % icons.length]}</div>
-                <span class="box-text">${highlight}</span>
+                <span class="box-text">${normalizedName}</span>
+                <div class="box-description">${description}</div>
+                <div class="expand-indicator">▼</div>
                 <div class="box-pulse"></div>
             `;
             highlightsList.appendChild(box);
@@ -1295,11 +1329,12 @@ async function displayDefaultInvitation() {
         return;
     }
     
-    // **RELOAD ALL DEPARTMENTS FRESH FROM STORAGE**
+    // ========================================================================
+    // SCENARIO 2: Load first department
+    // ========================================================================
     const deptKeys = await UniversalStorage.list('dept:', true);
     
     if (deptKeys && deptKeys.length > 0) {
-        // Load all departments fresh
         for (let key of deptKeys) {
             const deptId = key.replace('dept:', '');
             if (deptId !== 'PUBLIC') {
@@ -1310,7 +1345,6 @@ async function displayDefaultInvitation() {
             }
         }
         
-        // Get first department
         const firstDeptId = Object.keys(departments).filter(k => k !== 'PUBLIC')[0];
         const firstDept = departments[firstDeptId];
         
@@ -1336,14 +1370,25 @@ async function displayDefaultInvitation() {
             highlightsList.innerHTML = '';
             const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
 
+            // ✅ FIXED: Add descriptions and click handlers
             firstDept.highlights.forEach((highlight, index) => {
+                const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+                const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+                
                 const box = document.createElement('div');
                 box.className = 'highlight-box';
+                
+                box.addEventListener('click', function() {
+                    window.toggleEventDescription(this);
+                });
+                
                 box.innerHTML = `
                     <div class="box-border"></div>
                     <div class="box-glow"></div>
                     <div class="box-icon">${icons[index % icons.length]}</div>
-                    <span class="box-text">${highlight}</span>
+                    <span class="box-text">${normalizedName}</span>
+                    <div class="box-description">${description}</div>
+                    <div class="expand-indicator">▼</div>
                     <div class="box-pulse"></div>
                 `;
                 highlightsList.appendChild(box);
@@ -1354,7 +1399,9 @@ async function displayDefaultInvitation() {
         }
     }
     
-    // Fallback to hardcoded defaults (rest of the function stays the same)
+    // ========================================================================
+    // SCENARIO 3: Fallback defaults
+    // ========================================================================
     const deptSection = document.getElementById('deptSection');
     if (deptSection) deptSection.style.display = 'none';
     
@@ -1381,14 +1428,25 @@ async function displayDefaultInvitation() {
     ];
     const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮'];
 
+    // ✅ FIXED: Add descriptions and click handlers
     defaultHighlights.forEach((highlight, index) => {
+        const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+        const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+        
         const box = document.createElement('div');
         box.className = 'highlight-box';
+        
+        box.addEventListener('click', function() {
+            window.toggleEventDescription(this);
+        });
+        
         box.innerHTML = `
             <div class="box-border"></div>
             <div class="box-glow"></div>
             <div class="box-icon">${icons[index]}</div>
-            <span class="box-text">${highlight}</span>
+            <span class="box-text">${normalizedName}</span>
+            <div class="box-description">${description}</div>
+            <div class="expand-indicator">▼</div>
             <div class="box-pulse"></div>
         `;
         highlightsList.appendChild(box);
@@ -2194,7 +2252,11 @@ if (window.innerWidth <= 768) {
     };
 }
 
-
-
-
-
+/**
+ * Toggle individual event description
+ * Only the clicked box expands/collapses without affecting others
+ */
+window.toggleEventDescription = function(box) {
+    // Simply toggle the 'expanded' class on THIS box only
+    box.classList.toggle('expanded');
+}
