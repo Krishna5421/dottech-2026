@@ -844,7 +844,7 @@ body {
 
 .hero-title {
     font-family: 'Audiowide', 'Orbitron', sans-serif;
-    font-size: clamp(50px, 12vw, 180px);
+    font-size: clamp(56px, 12vw, 180px);
     font-weight: 900;
     letter-spacing: clamp(5px, 2vw, 25px);
     text-shadow: 
@@ -877,8 +877,8 @@ body {
 
 .year-cube {
     position: relative;
-    width: clamp(60px, 15vw, 100px);
-    height: clamp(60px, 15vw, 100px);
+    width: clamp(50px, 15vw, 100px);
+    height: clamp(50px, 15vw, 100px);
     transform-style: preserve-3d;
     animation: cubeRotate 5s infinite ease-in-out;
 }
