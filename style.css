@@ -844,7 +844,7 @@ body {
 
 .hero-title {
     font-family: 'Audiowide', 'Orbitron', sans-serif;
-    font-size: clamp(65px, 12vw, 180px);
+    font-size: clamp(60px, 12vw, 180px);
     font-weight: 900;
     letter-spacing: clamp(5px, 2vw, 25px);
     text-shadow: 
@@ -855,6 +855,8 @@ body {
     margin-bottom: 0;
     position: relative;
     color: var(--neon-cyan);
+    text-align: center; /* ADD THIS LINE */
+    width: 100%;
 }
 .title-particles {
     position: absolute;
@@ -900,7 +902,7 @@ body {
     align-items: center;
     justify-content: center;
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(40px, 10vw, 60px);
+    font-size: clamp(32px, 10vw, 60px);
     font-weight: 900;
     color: var(--neon-pink);
     text-shadow: 0 0 35px var(--neon-pink);
@@ -911,11 +913,11 @@ body {
 }
 
 .year-face.front {
-    transform: translateZ(clamp(30px, 7.5vw, 50px));
+    transform: translateZ(clamp(25px, 7.5vw, 50px));
 }
 
 .year-face.back {
-    transform: rotateY(180deg) translateZ(clamp(30px, 7.5vw, 50px));
+    transform: rotateY(180deg) translateZ(clamp(25px, 7.5vw, 50px));
 }
 
 .hero-subtitle {
@@ -931,7 +933,7 @@ body {
 .subtitle-word {
     color: var(--neon-green);
     text-shadow: 0 0 18px var(--neon-green);
-    animation: wordFloat 4s infinite ease-in-out;
+    animation: wordFloat 6s infinite ease-in-out;
     font-weight: 600;
 }
 
@@ -940,7 +942,7 @@ body {
 
 @keyframes wordFloat {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+    50% { transform: translateY(-8px); }
 }
 
 .subtitle-dot {
@@ -2838,11 +2840,11 @@ textarea:focus {
         box-shadow: 
             0 15px 40px rgba(0, 0, 0, 0.8),
             0 0 30px rgba(0, 243, 255, 0.3) !important;
-        background: linear-gradient(135deg, rgba(10, 14, 39, 0.95), rgba(15, 20, 50, 0.9)) !important;
+        background: linear-gradient(135deg, rgba(15, 20, 50, 0.95), rgba(20, 26, 60, 0.92)) !important;
     }
     
     .terminal-body {
-        background: rgba(0, 0, 0, 0.3) !important;
+        background: rgba(10, 15, 35, 0.4) !important;
     }
     
     /* ========================================================================
@@ -2853,7 +2855,7 @@ textarea:focus {
     .hero-title.glitch::before,
     .hero-title.glitch::after {
         display: block !important;
-        animation-duration: 4s !important;
+        animation-duration: 2s !important;
         opacity: 0.4 !important;
     }
     
@@ -2861,7 +2863,7 @@ textarea:focus {
     .section-title .glitch::before,
     .section-title .glitch::after {
         display: block !important;
-        animation-duration: 4s !important;
+        animation-duration: 3s !important;
         opacity: 0.35 !important;
     }
     
@@ -3165,8 +3167,6 @@ textarea:focus {
     .card-icon,
     .box-icon,
     .year-cube,
-    .subtitle-word,
-    .subtitle-dot,
     .frame-corner,
     .loading-progress {
         animation: none !important;
