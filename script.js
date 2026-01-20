@@ -1112,7 +1112,7 @@ async function showInvitation() {
     const invitationWrapper = document.getElementById('invitationWrapper');
 
     const statuses = [
-        'INITIALIZING NEURAL LINK...',
+        'LOADING DOTTECH MATRIX...',
         'SCANNING QUANTUM SIGNATURES...',
         'DECRYPTING INVITATION DATA...',
         'ESTABLISHING HOLOGRAPHIC CONNECTION...',
