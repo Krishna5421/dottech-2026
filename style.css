@@ -3331,7 +3331,7 @@ textarea:focus {
 .dept-highlight {
     color: var(--neon-cyan);
     font-weight: 700;
-    font-size: 1em;
+    font-size: 1.12em;
     text-shadow: 0 0 8px var(--neon-cyan);
     display: inline;
     margin-bottom: 0;
