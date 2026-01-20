@@ -1278,12 +1278,12 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
     const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮', '💻'];
 
     const descriptions = {
-        'HACK_A_MIN': 'A 60-minute rapid prototyping challenge where teams race against time to develop innovative solutions. Test your coding speed, creativity, and problem-solving skills in this intense hackathon format.',
-        'UNLOCK_VERSE': 'An immersive escape room experience in virtual reality. Navigate through cryptographic puzzles, decode algorithms, and unlock digital mysteries using your technical knowledge and teamwork.',
-        'VIRTUAL_STOCK_MARKET': 'Experience real-time market simulation with virtual currency. Learn trading strategies, analyze market trends, and compete to build the most profitable portfolio in this engaging financial tech challenge.',
-        'CODE_EVOLUTION': 'A progressive coding competition where problems evolve in complexity. Start with basics and advance through increasingly challenging algorithmic puzzles that test your problem-solving evolution.',
-        'QR_TECH_HUNT': 'A technology-driven treasure hunt using QR codes scattered across campus. Solve riddles, complete technical challenges, and scan codes to progress through this interactive adventure.',
-        'LAN_GAMING': 'High-octane multiplayer gaming tournaments featuring popular esports titles. Form teams, strategize, and compete for glory in fast-paced competitive gaming action.'
+        'HACK_A_MIN': 'A rapid coding challenge to build innovative solutions under pressure. Test your speed, creativity, and problem-solving in this intense hackathon sprint.',
+        'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
+        'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
+        'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
+        'QR_TECH_HUNT': 'Technology-driven treasure hunt using QR codes and tech riddles. Scan codes and solve challenges to progress through this interactive adventure.',
+        'LAN_GAMING': 'Multiplayer esports tournaments with popular competitive titles. Form teams and battle for glory in high-speed gaming action.'
     };
 
     dept.highlights.forEach((highlight, index) => {
@@ -1319,13 +1319,13 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
 async function displayDefaultInvitation() {
     // Event descriptions object (used in all three scenarios)
     const descriptions = {
-        'HACK_A_MIN': 'A 60-minute rapid prototyping challenge where teams race against time to develop innovative solutions. Test your coding speed, creativity, and problem-solving skills in this intense hackathon format.',
-        'UNLOCK_VERSE': 'An immersive escape room experience in virtual reality. Navigate through cryptographic puzzles, decode algorithms, and unlock digital mysteries using your technical knowledge and teamwork.',
-        'VIRTUAL_STOCK_MARKET': 'Experience real-time market simulation with virtual currency. Learn trading strategies, analyze market trends, and compete to build the most profitable portfolio in this engaging financial tech challenge.',
-        'CODE_EVOLUTION': 'A progressive coding competition where problems evolve in complexity. Start with basics and advance through increasingly challenging algorithmic puzzles that test your problem-solving evolution.',
-        'QR_TECH_HUNT': 'A technology-driven treasure hunt using QR codes scattered across campus. Solve riddles, complete technical challenges, and scan codes to progress through this interactive adventure.',
-        'LAN_GAMING': 'High-octane multiplayer gaming tournaments featuring popular esports titles. Form teams, strategize, and compete for glory in fast-paced competitive gaming action.'
-    };
+    'HACK_A_MIN': 'A rapid coding challenge to build innovative solutions under pressure. Test your speed, creativity, and problem-solving in this intense hackathon sprint.',
+    'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
+    'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
+    'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
+    'QR_TECH_HUNT': 'Technology-driven treasure hunt using QR codes and tech riddles. Scan codes and solve challenges to progress through this interactive adventure.',
+    'LAN_GAMING': 'Multiplayer esports tournaments with popular competitive titles. Form teams and battle for glory in high-speed gaming action.'
+};
 
     // ========================================================================
     // SCENARIO 1: Load PUBLIC invitation
