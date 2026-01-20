@@ -3329,12 +3329,14 @@ textarea:focus {
 
 /* Highlighted Department Name in Message */
 .dept-highlight {
-    color: var(--neon-cyan);        
-    font-weight: 600;                   
-    font-size: 1em;                    
-    text-shadow: 0 0 5px var(--neon-cyan); 
-    display: inline;                    
-    margin-bottom: 0;                   
+    color: var(--neon-cyan);
+    font-weight: 700;
+    font-size: 1em;
+    text-shadow: 0 0 8px var(--neon-cyan);
+    display: inline;
+    margin-bottom: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 /* ============================================================================

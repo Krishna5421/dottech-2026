@@ -1260,10 +1260,10 @@ function displayInvitation(dept, deptId) {
     // UPDATE MESSAGE (Message Section)
     // ========================================================================
     
-    const displayMessage = dept.message || PROFESSIONAL_INVITATION;
+const displayMessage = dept.message || PROFESSIONAL_INVITATION;
 
-// Add department name at the beginning with special formatting
-const departmentPrefix = `<span class="dept-highlight">${dept.name}</span>\n\n`;
+// Format as "To: Department Name"
+const departmentPrefix = `To: <span class="dept-highlight">${dept.name}</span>\n\n`;
 const fullMessage = departmentPrefix + displayMessage;
 
 document.getElementById('displayMsg').innerHTML = fullMessage;
