@@ -1387,7 +1387,7 @@ body {
 }
 
 .terminal-window {
-    max-width: 900px;
+    max-width: 1100px;
     width: 100%;
     background: linear-gradient(135deg, rgba(5, 8, 20, 0.97), rgba(8, 12, 28, 0.96));
     border: 3px solid var(--neon-cyan);
