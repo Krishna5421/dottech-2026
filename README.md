@@ -18,7 +18,7 @@ A cyberpunk-themed digital invitation website for the DOTTECH 2026 tech fest. Fe
 
 ## Live Demo
 
-Visit: `https://event-invitation.vercel.app`
+Visit: `https://dottech-invitation.vercel.app`
 
 Admin Access: Add `?secret=admin` to URL or press `Ctrl+Shift+A`
 
