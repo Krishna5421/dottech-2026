@@ -999,13 +999,13 @@ body {
 /* Mobile - Swipe/Touch Icon (show on screens 768px and below) */
 .scroll-icon-mobile {
     display: none;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     position: relative;
 }
 
 .swipe-hand {
-    font-size: 40px;
+    font-size: 50px;
     animation: swipeUpDown 2s infinite ease-in-out;
     filter: drop-shadow(0 0 15px var(--neon-cyan));
 }
@@ -3337,6 +3337,36 @@ textarea:focus {
     margin-bottom: 0;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+/* ============================================================================
+   DISABLE AUTO-ROTATION ON MOBILE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Lock orientation to portrait mode */
+    @media screen and (orientation: landscape) {
+        body::before {
+            content: "⚠️ PLEASE ROTATE YOUR DEVICE TO PORTRAIT MODE FOR BEST EXPERIENCE";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 8, 22, 0.98);
+            color: var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 999999;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(16px, 4vw, 20px);
+            padding: 40px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+    }
 }
 
 /* ============================================================================
