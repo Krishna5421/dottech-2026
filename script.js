@@ -1278,7 +1278,7 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
     const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮', '💻'];
 
     const descriptions = {
-        'HACK_A_MIN': 'A lightning-fast one-minute coding challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
+        'HACK_A_MIN': 'A lightning-fast one-minute challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
         'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
         'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
         'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
@@ -1323,7 +1323,7 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
 async function displayDefaultInvitation() {
     // Event descriptions object (used in all three scenarios)
     const descriptions = {
-    'HACK_A_MIN': 'A lightning-fast one-minute coding challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
+    'HACK_A_MIN': 'A lightning-fast one-minute challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
     'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
     'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
     'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
