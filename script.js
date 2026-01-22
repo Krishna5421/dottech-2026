@@ -1278,12 +1278,12 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
     const icons = ['🧠', '🔓', '📈', '⚡', '🔍', '🎮', '💻'];
 
     const descriptions = {
-        'HACK_A_MIN': 'A rapid coding challenge to build innovative solutions under pressure. Test your speed, creativity, and problem-solving in this intense hackathon sprint.',
+        'HACK_A_MIN': 'A lightning-fast one-minute coding challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
         'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
         'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
         'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
         'QR_TECH_HUNT': 'Technology-driven treasure hunt using QR codes and tech riddles. Scan codes and solve challenges to progress through this interactive adventure.',
-        'LAN_GAMING': 'Multiplayer esports tournaments with popular competitive titles. Form teams and battle for glory in high-speed gaming action.'
+        'LAN_GAMING': 'Competitive gaming tournaments featuring popular titles including Mini Militia, Asphalt 8, and Valorant. Showcase your skills and dominate the competition.'
     };
 
     dept.highlights.forEach((highlight, index) => {
@@ -1323,12 +1323,12 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
 async function displayDefaultInvitation() {
     // Event descriptions object (used in all three scenarios)
     const descriptions = {
-    'HACK_A_MIN': 'A rapid coding challenge to build innovative solutions under pressure. Test your speed, creativity, and problem-solving in this intense hackathon sprint.',
+    'HACK_A_MIN': 'A lightning-fast one-minute coding challenge where every second counts. Race against the clock to build, debug, or solve problems in just 60 seconds of pure adrenaline.',
     'UNLOCK_VERSE': 'An immersive escape room challenge with mind-bending puzzles and brain teasers. Race against time to crack codes, solve riddles, and escape before the clock runs out.',
     'VIRTUAL_STOCK_MARKET': 'Real-time trading simulation with virtual currency and live market dynamics. Compete to build the most profitable portfolio using strategic analysis.',
     'CODE_EVOLUTION': 'Progressive coding competition with escalating difficulty levels. Solve algorithmic challenges that grow from basics to advanced problems.',
     'QR_TECH_HUNT': 'Technology-driven treasure hunt using QR codes and tech riddles. Scan codes and solve challenges to progress through this interactive adventure.',
-    'LAN_GAMING': 'Multiplayer esports tournaments with popular competitive titles. Form teams and battle for glory in high-speed gaming action.'
+    'LAN_GAMING': 'Competitive gaming tournaments featuring popular titles including Mini Militia, Asphalt 8, and Valorant. Showcase your skills and dominate the competition.'
 };
 
     // ========================================================================
