@@ -1287,28 +1287,32 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
     };
 
     dept.highlights.forEach((highlight, index) => {
-        const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
-        const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
-        
-        const box = document.createElement('div');
-        box.className = 'highlight-box';
-        
-        // ✅ USE EVENT LISTENER INSTEAD OF ONCLICK ATTRIBUTE
-        box.addEventListener('click', function() {
-            window.toggleEventDescription(this);
-        });
-        
-        box.innerHTML = `
-            <div class="box-border"></div>
-            <div class="box-glow"></div>
-            <div class="box-icon">${icons[index % icons.length]}</div>
-            <span class="box-text">${normalizedName}</span>
-            <div class="box-description">${description}</div>
-            <div class="expand-indicator">▼</div>
-            <div class="box-pulse"></div>
-        `;
-        highlightsList.appendChild(box);
+    const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+    const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+    
+    const box = document.createElement('div');
+    box.className = 'highlight-box';
+    
+    // ✅ USE EVENT LISTENER INSTEAD OF ONCLICK ATTRIBUTE
+    box.addEventListener('click', function() {
+        window.toggleEventDescription(this);
     });
+    
+    box.innerHTML = `
+        <div class="box-border"></div>
+        <div class="box-glow"></div>
+        <div class="box-icon">${icons[index % icons.length]}</div>
+        <span class="box-text">${normalizedName}</span>
+        <div class="box-description">${description}</div>
+        <div class="expand-indicator">▼</div>
+        <div class="box-pulse"></div>
+        <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
+            <span class="btn-text">REGISTER NOW</span>
+            <span class="btn-icon">→</span>
+        </button>
+    `;
+    highlightsList.appendChild(box);
+});
 }
 
 /**
@@ -1369,14 +1373,18 @@ async function displayDefaultInvitation() {
             });
             
             box.innerHTML = `
-                <div class="box-border"></div>
-                <div class="box-glow"></div>
-                <div class="box-icon">${icons[index % icons.length]}</div>
-                <span class="box-text">${normalizedName}</span>
-                <div class="box-description">${description}</div>
-                <div class="expand-indicator">▼</div>
-                <div class="box-pulse"></div>
-            `;
+    <div class="box-border"></div>
+    <div class="box-glow"></div>
+    <div class="box-icon">${icons[index % icons.length]}</div>
+    <span class="box-text">${normalizedName}</span>
+    <div class="box-description">${description}</div>
+    <div class="expand-indicator">▼</div>
+    <div class="box-pulse"></div>
+    <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
+        <span class="btn-text">REGISTER NOW</span>
+        <span class="btn-icon">→</span>
+    </button>
+`;
             highlightsList.appendChild(box);
         });
 
@@ -1438,14 +1446,14 @@ async function displayDefaultInvitation() {
                 });
                 
                 box.innerHTML = `
-                    <div class="box-border"></div>
-                    <div class="box-glow"></div>
-                    <div class="box-icon">${icons[index % icons.length]}</div>
-                    <span class="box-text">${normalizedName}</span>
-                    <div class="box-description">${description}</div>
-                    <div class="expand-indicator">▼</div>
-                    <div class="box-pulse"></div>
-                `;
+    <div class="box-border"></div>
+    <div class="box-glow"></div>
+    <div class="box-icon">${icons[index % icons.length]}</div>
+    <span class="box-text">${normalizedName}</span>
+    <div class="box-description">${description}</div>
+    <div class="expand-indicator">▼</div>
+    <div class="box-pulse"></div>
+`;
                 highlightsList.appendChild(box);
             });
 
@@ -1496,14 +1504,18 @@ async function displayDefaultInvitation() {
         });
         
         box.innerHTML = `
-            <div class="box-border"></div>
-            <div class="box-glow"></div>
-            <div class="box-icon">${icons[index]}</div>
-            <span class="box-text">${normalizedName}</span>
-            <div class="box-description">${description}</div>
-            <div class="expand-indicator">▼</div>
-            <div class="box-pulse"></div>
-        `;
+        <div class="box-border"></div>
+        <div class="box-glow"></div>
+        <div class="box-icon">${icons[index]}</div>
+        <span class="box-text">${normalizedName}</span>
+        <div class="box-description">${description}</div>
+        <div class="expand-indicator">▼</div>
+        <div class="box-pulse"></div>
+        <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
+            <span class="btn-text">REGISTER NOW</span>
+            <span class="btn-icon">→</span>
+        </button>
+    `;
         highlightsList.appendChild(box);
     });
 
