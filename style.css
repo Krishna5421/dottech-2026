@@ -3481,7 +3481,8 @@ textarea:focus {
 }
 
 /* ============================================================================
-   MINIMAL ONE-LINE SPONSOR BADGE - MOBILE PERFECT
+   SPONSOR BADGE - Medium Size
+   Displays sponsor logo and name on all pages (public and department-specific)
    ============================================================================ */
 
 .sponsor-badge-oneline {
@@ -3492,18 +3493,18 @@ textarea:focus {
     z-index: 100;
     display: flex;
     align-items: center;
-    gap: clamp(10px, 2vw, 15px);
-    padding: clamp(10px, 2vw, 14px) clamp(18px, 4vw, 28px);
+    gap: clamp(12px, 2.5vw, 18px);
+    padding: clamp(12px, 2.5vw, 16px) clamp(24px, 5vw, 35px);
     background: rgba(5, 10, 30, 0.9);
     border: 1.5px solid var(--neon-cyan);
     border-radius: 30px;
     box-shadow: 
-        0 0 15px rgba(0, 243, 255, 0.25),
-        0 5px 15px rgba(0, 0, 0, 0.3);
+        0 0 20px rgba(0, 243, 255, 0.3),
+        0 5px 20px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
     animation: badgeFadeIn 0.8s ease-out 0.3s forwards;
     opacity: 0;
-    max-width: 90%; /* Prevent overflow */
+    max-width: 90%;
 }
 
 @keyframes badgeFadeIn {
@@ -3517,85 +3518,106 @@ textarea:focus {
     }
 }
 
+/* "SPONSORED BY" text */
 .badge-text {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(10px, 2vw, 12px);
+    font-size: clamp(11px, 2.2vw, 13px);
     color: var(--neon-green);
     letter-spacing: clamp(1.5px, 0.4vw, 2px);
-    text-shadow: 0 0 6px var(--neon-green);
+    text-shadow: 0 0 8px var(--neon-green);
     font-weight: 600;
     white-space: nowrap;
-    flex-shrink: 0; /* Prevent text from shrinking */
+    flex-shrink: 0;
 }
 
+/* Sponsor logo image */
 .badge-logo {
-    max-height: clamp(20px, 4.5vw, 30px);
-    max-width: clamp(80px, 20vw, 150px); /* Add max-width to prevent overflow */
+    max-height: clamp(24px, 5vw, 35px);
+    max-width: clamp(100px, 24vw, 180px);
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: brightness(1.15) drop-shadow(0 0 6px rgba(0, 243, 255, 0.3));
-    flex-shrink: 1; /* Allow logo to shrink if needed */
-}
-
-/* ============================================================================
-   SPONSOR INFO - LOGO + NAME TOGETHER
-   ============================================================================ */
-
-.sponsor-info {
-    display: flex;
-    align-items: center;
-    gap: clamp(8px, 1.5vw, 12px);
+    filter: brightness(1.15) drop-shadow(0 0 8px rgba(0, 243, 255, 0.3));
     flex-shrink: 1;
 }
 
+/* Container for logo + company name */
+.sponsor-info {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 2vw, 15px);
+    flex-shrink: 1;
+}
+
+/* Company name text */
 .sponsor-name {
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(11px, 2.2vw, 14px);
+    font-size: clamp(12px, 2.5vw, 16px);
     color: var(--neon-cyan);
-    letter-spacing: clamp(1px, 0.3vw, 2px);
-    text-shadow: 0 0 8px var(--neon-cyan);
+    letter-spacing: clamp(1px, 0.4vw, 2px);
+    text-shadow: 0 0 10px var(--neon-cyan);
     font-weight: 700;
     white-space: nowrap;
 }
 
-/* Desktop hover effect */
+/* ============================================================================
+   Desktop Hover Effects
+   ============================================================================ */
+
 @media (min-width: 769px) {
     .sponsor-badge-oneline:hover {
         box-shadow: 
-            0 0 25px rgba(0, 243, 255, 0.5),
-            0 8px 20px rgba(0, 0, 0, 0.4);
+            0 0 30px rgba(0, 243, 255, 0.5),
+            0 10px 25px rgba(0, 0, 0, 0.4);
         transform: translateX(-50%) translateY(-2px);
         transition: all 0.3s ease;
     }
     
     .sponsor-badge-oneline:hover .badge-logo {
-        filter: brightness(1.3) drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+        filter: brightness(1.3) drop-shadow(0 0 12px rgba(0, 243, 255, 0.5));
         transition: filter 0.3s ease;
     }
 }
 
-/* Tablet optimizations */
+/* ============================================================================
+   Tablet Responsive
+   ============================================================================ */
+
 @media (max-width: 1024px) {
     .sponsor-badge-oneline {
         top: clamp(20px, 4vh, 30px);
-        padding: 9px 16px;
-        gap: 10px;
+        padding: 10px 20px;
+        gap: 12px;
+    }
+    
+    .badge-text {
+        font-size: 11px;
     }
     
     .badge-logo {
-        max-height: 24px;
-        max-width: 120px;
+        max-height: 28px;
+        max-width: 140px;
+    }
+    
+    .sponsor-info {
+        gap: 10px;
+    }
+    
+    .sponsor-name {
+        font-size: 13px;
     }
 }
 
-/* Mobile optimizations - FIXED */
+/* ============================================================================
+   Mobile Responsive (768px and below)
+   ============================================================================ */
+
 @media (max-width: 768px) {
     .sponsor-badge-oneline {
-        top: clamp(50px, 8vh, 70px); /* Moved down - more space from top */
+        top: clamp(50px, 8vh, 70px);
         padding: 8px 14px;
         gap: 8px;
-        max-width: 85%; /* Slightly smaller to fit better */
+        max-width: 85%;
         border-radius: 25px;
     }
     
@@ -3606,17 +3628,26 @@ textarea:focus {
     
     .badge-logo {
         max-height: clamp(18px, 4vw, 24px);
-        max-width: clamp(70px, 18vw, 100px); /* Prevent logo overflow */
+        max-width: clamp(70px, 18vw, 100px);
+    }
+    
+    .sponsor-info {
+        gap: 6px;
+    }
+    
+    .sponsor-name {
+        font-size: clamp(9px, 2vw, 11px);
+        letter-spacing: 0.8px;
     }
 }
 
-/* Small mobile phones - EXTRA FIXED */
+/* Small mobile phones (480px and below) */
 @media (max-width: 480px) {
     .sponsor-badge-oneline {
-        top: clamp(45px, 7vh, 60px); /* Better positioning */
+        top: clamp(45px, 7vh, 60px);
         padding: 7px 12px;
         gap: 7px;
-        max-width: 90%; /* More room on small screens */
+        max-width: 90%;
     }
     
     .badge-text {
@@ -3626,11 +3657,19 @@ textarea:focus {
     
     .badge-logo {
         max-height: 16px;
-        max-width: 60px; /* Smaller logo on tiny screens */
+        max-width: 60px;
+    }
+    
+    .sponsor-info {
+        gap: 5px;
+    }
+    
+    .sponsor-name {
+        font-size: 9px;
     }
 }
 
-/* Extra small screens (iPhone SE, etc.) */
+/* Extra small screens (375px and below) */
 @media (max-width: 375px) {
     .sponsor-badge-oneline {
         top: 40px;
@@ -3647,28 +3686,40 @@ textarea:focus {
         max-height: 14px;
         max-width: 50px;
     }
+    
+    .sponsor-info {
+        gap: 5px;
+    }
+    
+    .sponsor-name {
+        font-size: 8px;
+    }
 }
 
-/* Adjust hero content spacing - MORE SPACE ON MOBILE */
+/* ============================================================================
+   Hero Content Spacing Adjustment
+   Ensures proper gap between sponsor badge and DOTTECH title
+   ============================================================================ */
+
 .hero-content {
     margin-top: clamp(40px, 8vh, 60px);
 }
 
 @media (max-width: 768px) {
     .hero-content {
-        margin-top: 30px !important; 
+        margin-top: 30px !important; /* 30px gap on mobile */
     }
 }
 
 @media (max-width: 480px) {
     .hero-content {
-        margin-top: 30px !important; 
+        margin-top: 30px !important;
     }
 }
 
 @media (max-width: 375px) {
     .hero-content {
-        margin-top: 30px !important; 
+        margin-top: 30px !important;
     }
 }
 
