@@ -2327,3 +2327,36 @@ window.toggleEventDescription = function(box) {
     // Simply toggle the 'expanded' class on THIS box only
     box.classList.toggle('expanded');
 }
+
+// ============================================================================
+// SPONSOR BADGE CLICK HANDLER - MOBILE OPTIMIZED (NO ANIMATION)
+// ============================================================================
+document.addEventListener('DOMContentLoaded', function() {
+    const sponsorBadge = document.querySelector('.sponsor-badge-oneline');
+    
+    if (sponsorBadge) {
+        sponsorBadge.addEventListener('click', function() {
+            // Mobile: Instant toggle without animation
+            if (window.innerWidth <= 768) {
+                this.classList.toggle('expanded');
+                
+                // Force instant display (no transition)
+                const description = this.querySelector('.sponsor-description');
+                if (description) {
+                    if (this.classList.contains('expanded')) {
+                        description.style.display = 'block';
+                        description.style.maxHeight = 'none';
+                        description.style.opacity = '1';
+                    } else {
+                        description.style.display = 'none';
+                        description.style.maxHeight = '0';
+                        description.style.opacity = '0';
+                    }
+                }
+            } else {
+                // Desktop: Keep smooth animation
+                this.classList.toggle('expanded');
+            }
+        });
+    }
+});
