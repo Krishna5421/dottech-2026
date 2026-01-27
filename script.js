@@ -2329,32 +2329,41 @@ window.toggleEventDescription = function(box) {
 }
 
 // ============================================================================
-// SPONSOR BADGE CLICK HANDLER - MOBILE OPTIMIZED (NO ANIMATION)
+// SPONSOR BADGE CLICK HANDLER - FIXED FIRST-CLICK LAG
 // ============================================================================
 document.addEventListener('DOMContentLoaded', function() {
     const sponsorBadge = document.querySelector('.sponsor-badge-oneline');
     
     if (sponsorBadge) {
-        sponsorBadge.addEventListener('click', function() {
-            // Mobile: Instant toggle without animation
+        sponsorBadge.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // ✅ INSTANTLY disable CSS transition on mobile
             if (window.innerWidth <= 768) {
+                this.style.transition = 'none';
                 this.classList.toggle('expanded');
                 
-                // Force instant display (no transition)
                 const description = this.querySelector('.sponsor-description');
                 if (description) {
                     if (this.classList.contains('expanded')) {
                         description.style.display = 'block';
                         description.style.maxHeight = 'none';
                         description.style.opacity = '1';
+                        description.style.transition = 'none';
                     } else {
                         description.style.display = 'none';
-                        description.style.maxHeight = '0';
-                        description.style.opacity = '0';
+                        description.style.transition = 'none';
                     }
                 }
+                
+                // ✅ RE-ENABLE transition after 50ms (instant to user)
+                setTimeout(() => {
+                    this.style.transition = '';
+                    if (description) description.style.transition = '';
+                }, 50);
             } else {
-                // Desktop: Keep smooth animation
+                // Desktop: Normal CSS animation
                 this.classList.toggle('expanded');
             }
         });

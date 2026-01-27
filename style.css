@@ -3839,6 +3839,20 @@ textarea:focus {
 }
 
 /* ============================================================================
+   MOBILE FIRST-CLICK LAG FIX 
+   ============================================================================ */
+@media (max-width: 768px) {
+    .sponsor-description {
+        transition: max-height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease !important;
+    }
+    
+    .sponsor-badge-oneline.expanded .sponsor-description {
+        transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.25s ease !important;
+    }
+}
+
+
+/* ============================================================================
    END OF COMPLETE CSS
 
    ============================================================================ */
