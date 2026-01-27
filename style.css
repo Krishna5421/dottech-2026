@@ -3449,7 +3449,7 @@ textarea:focus {
 }
 
 /* ONLY show button when box is expanded */
-.highlight-box.expanded .register-btn {
+.highlights-container .highlight-box.expanded .register-btn {
     display: flex !important;
     animation: slideInButton 0.5s ease-out;
 }
@@ -3850,6 +3850,16 @@ textarea:focus {
         transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.25s ease !important;
     }
 }
+
+/* HIDE REGISTER BUTTON EVERYWHERE EXCEPT EVENTS */
+.dept-frame .register-btn,
+.hero-section .register-btn,
+.sponsor-badge-oneline .register-btn,
+.message-section .register-btn,
+footer .register-btn {
+    display: none !important;
+}
+
 
 
 /* ============================================================================
