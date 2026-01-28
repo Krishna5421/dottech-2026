@@ -1293,7 +1293,6 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
     const box = document.createElement('div');
     box.className = 'highlight-box';
     
-    // ✅ USE EVENT LISTENER INSTEAD OF ONCLICK ATTRIBUTE
     box.addEventListener('click', function() {
         window.toggleEventDescription(this);
     });
@@ -1306,10 +1305,6 @@ document.getElementById('displayMsg').innerHTML = fullMessage;
         <div class="box-description">${description}</div>
         <div class="expand-indicator">▼</div>
         <div class="box-pulse"></div>
-        <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
-            <span class="btn-text">REGISTER NOW</span>
-            <span class="btn-icon">→</span>
-        </button>
     `;
     highlightsList.appendChild(box);
 });
@@ -1362,31 +1357,31 @@ async function displayDefaultInvitation() {
 
         // ✅ FIXED: Add descriptions and click handlers
         publicData.highlights.forEach((highlight, index) => {
-            const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
-            const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
-            
-            const box = document.createElement('div');
-            box.className = 'highlight-box';
-            
-            box.addEventListener('click', function() {
-                window.toggleEventDescription(this);
-            });
-            
-            box.innerHTML = `
-    <div class="box-border"></div>
-    <div class="box-glow"></div>
-    <div class="box-icon">${icons[index % icons.length]}</div>
-    <span class="box-text">${normalizedName}</span>
-    <div class="box-description">${description}</div>
-    <div class="expand-indicator">▼</div>
-    <div class="box-pulse"></div>
-    <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
-        <span class="btn-text">REGISTER NOW</span>
-        <span class="btn-icon">→</span>
-    </button>
-`;
-            highlightsList.appendChild(box);
-        });
+    const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+    const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+    
+    const box = document.createElement('div');
+    box.className = 'highlight-box';
+    
+    box.addEventListener('click', function() {
+        window.toggleEventDescription(this);
+    });
+    
+    box.innerHTML = `
+        <div class="box-border"></div>
+        <div class="box-glow"></div>
+        <div class="box-icon">${icons[index % icons.length]}</div>
+        <span class="box-text">${normalizedName}</span>
+        <div class="box-description">${description}</div>
+        <div class="expand-indicator">▼</div>
+        <div class="box-pulse"></div>
+        <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
+            <span class="btn-text">REGISTER NOW</span>
+            <span class="btn-icon">→</span>
+        </button>
+    `;
+    highlightsList.appendChild(box);
+});
 
         console.log('✅ Loaded FRESH PUBLIC data:', publicData);
         return;
@@ -1435,27 +1430,31 @@ async function displayDefaultInvitation() {
 
             // ✅ FIXED: Add descriptions and click handlers
             firstDept.highlights.forEach((highlight, index) => {
-                const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
-                const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
-                
-                const box = document.createElement('div');
-                box.className = 'highlight-box';
-                
-                box.addEventListener('click', function() {
-                    window.toggleEventDescription(this);
-                });
-                
-                box.innerHTML = `
-    <div class="box-border"></div>
-    <div class="box-glow"></div>
-    <div class="box-icon">${icons[index % icons.length]}</div>
-    <span class="box-text">${normalizedName}</span>
-    <div class="box-description">${description}</div>
-    <div class="expand-indicator">▼</div>
-    <div class="box-pulse"></div>
-`;
-                highlightsList.appendChild(box);
-            });
+    const normalizedName = highlight.toUpperCase().replace(/ /g, '_');
+    const description = descriptions[normalizedName] || 'An exciting event awaits! More details coming soon.';
+    
+    const box = document.createElement('div');
+    box.className = 'highlight-box';
+    
+    box.addEventListener('click', function() {
+        window.toggleEventDescription(this);
+    });
+    
+    box.innerHTML = `
+        <div class="box-border"></div>
+        <div class="box-glow"></div>
+        <div class="box-icon">${icons[index % icons.length]}</div>
+        <span class="box-text">${normalizedName}</span>
+        <div class="box-description">${description}</div>
+        <div class="expand-indicator">▼</div>
+        <div class="box-pulse"></div>
+        <button class="register-btn" onclick="event.stopPropagation(); window.open('https://docs.google.com/forms/d/e/1FAIpQLSckiudsm6emWhm5OwGeyQF0TVPpX-5oEnIF3gNjbM0xunYYJg/viewform', '_blank')">
+            <span class="btn-text">REGISTER NOW</span>
+            <span class="btn-icon">→</span>
+        </button>
+    `;
+    highlightsList.appendChild(box);
+});
 
             console.log('✅ Loaded FRESH first department:', firstDeptId);
             return;
